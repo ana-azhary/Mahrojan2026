@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ขออภัย • กิจกรรมการแข่งขันวานเฟ้นหาดาเด่น ครั้งที่ 8 ปี 2026</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(145deg, #0b1a2e 0%, #1a3a4a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ลวดลายอิสลามจางๆ */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M50 0 L100 50 L50 100 L0 50 Z" fill="none" stroke="%23d4af37" stroke-width="1"/><circle cx="50" cy="50" r="20" fill="none" stroke="%23d4af37" stroke-width="0.8"/><path d="M50 20 L60 40 L80 50 L60 60 L50 80 L40 60 L20 50 L40 40 Z" fill="%23d4af37" opacity="0.3"/></svg>');
+            background-size: 120px 120px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            background: rgba(10, 25, 40, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 40px 35px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        /* ส่วนหัว */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px dashed rgba(212, 175, 55, 0.5);
+            padding-bottom: 25px;
+        }
+
+        .bismillah {
+            font-family: 'Amiri', serif;
+            font-size: 2rem;
+            color: #d4af37;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .title-main {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.4;
+            margin: 10px 0;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .title-main .highlight {
+            color: #d4af37;
+            background: linear-gradient(135deg, #d4af37, #f9e076);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.8rem;
+        }
+
+        .sub-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            color: #d4af37;
+            margin: 10px 0;
+            font-weight: 700;
+            direction: rtl;
+        }
+
+        .salam {
+            font-size: 1.5rem;
+            color: #e0e0e0;
+            margin: 15px 0;
+            font-weight: 300;
+        }
+
+        .salam i {
+            color: #d4af37;
+            margin: 0 8px;
+        }
+
+        /* กล่องขออภัย */
+        .apology-box {
+            background: rgba(220, 53, 69, 0.15);
+            border: 2px solid #dc3545;
+            border-radius: 24px;
+            padding: 25px 20px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(220, 53, 69, 0.3);
+            animation: pulseBorder 2s infinite;
+        }
+
+        @keyframes pulseBorder {
+            0% { border-color: #dc3545; box-shadow: 0 0 20px rgba(220, 53, 69, 0.3); }
+            50% { border-color: #ff6b6b; box-shadow: 0 0 45px rgba(220, 53, 69, 0.6); }
+            100% { border-color: #dc3545; box-shadow: 0 0 20px rgba(220, 53, 69, 0.3); }
+        }
+
+        .apology-box i {
+            font-size: 3rem;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        .apology-box h2 {
+            font-size: 2rem;
+            color: #ffb3b3;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .apology-box p {
+            font-size: 1.3rem;
+            color: #f0f0f0;
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+
+        .apology-box .urgent {
+            color: #ffd966;
+            font-weight: 600;
+            font-size: 1.4rem;
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* การนับผู้เข้าชม */
+        .counter-section {
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 30px;
+            padding: 20px 25px;
+            margin: 30px 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: inset 0 0 25px rgba(212, 175, 55, 0.1);
+        }
+
+        .counter-icon {
+            font-size: 2.5rem;
+            color: #d4af37;
+            animation: eyeBlink 3s infinite;
+        }
+
+        @keyframes eyeBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .counter-text {
+            font-size: 1.2rem;
+            color: #ddd;
+            font-weight: 300;
+        }
+
+        .counter-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(135deg, #d4af37, #f9e076);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            min-width: 120px;
+            text-align: center;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+            transition: transform 0.2s ease;
+        }
+
+        .counter-number.bump {
+            transform: scale(1.2);
+        }
+
+        .live-badge {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 50px;
+            letter-spacing: 1px;
+            animation: livePulse 1.5s infinite;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        @keyframes livePulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        /* รายการแข่งขัน */
+        .competition-title {
+            font-size: 1.8rem;
+            color: #d4af37;
+            text-align: center;
+            margin: 35px 0 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .competition-title i {
+            font-size: 2rem;
+        }
+
+        .list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .list-item {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #f0f0f0;
+            font-size: 1.05rem;
+            border-left: 4px solid #d4af37;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .list-item:hover {
+            background: rgba(212, 175, 55, 0.15);
+            transform: translateX(6px);
+            border-left-color: #f9e076;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .list-item .num {
+            background: #d4af37;
+            color: #0b1a2e;
+            font-weight: 700;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .list-item .name {
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        /* หมายเหตุ */
+        .note-box {
+            background: rgba(212, 175, 55, 0.08);
+            border-radius: 20px;
+            padding: 22px 25px;
+            margin: 25px 0 15px;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            text-align: center;
+        }
+
+        .note-box p {
+            color: #e0e0e0;
+            font-size: 1.15rem;
+            line-height: 1.9;
+        }
+
+        .note-box .dua {
+            font-family: 'Amiri', serif;
+            font-size: 1.6rem;
+            color: #d4af37;
+            margin-top: 15px;
+            direction: rtl;
+            font-weight: 700;
+        }
+
+        .note-box .dua-trans {
+            font-size: 1rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        /* ปุ่ม */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37, #b8962e);
+            color: #0b1a2e;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
+            background: linear-gradient(135deg, #f9e076, #d4af37);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #d4af37;
+            border: 2px solid #d4af37;
+        }
+
+        .btn-outline:hover {
+            background: rgba(212, 175, 55, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* ข้อความท้าย */
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 20px;
+        }
+
+        .footer-note i {
+            color: #d4af37;
+            margin: 0 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 18px;
+                border-radius: 32px;
+            }
+
+            .title-main {
+                font-size: 1.6rem;
+            }
+
+            .title-main .highlight {
+                font-size: 2rem;
+            }
+
+            .bismillah {
+                font-size: 1.5rem;
+            }
+
+            .sub-arabic {
+                font-size: 1.4rem;
+            }
+
+            .salam {
+                font-size: 1.15rem;
+            }
+
+            .apology-box h2 {
+                font-size: 1.5rem;
+            }
+
+            .apology-box p {
+                font-size: 1.1rem;
+            }
+
+            .counter-number {
+                font-size: 2.8rem;
+                min-width: 90px;
+            }
+
+            .counter-icon {
+                font-size: 2rem;
+            }
+
+            .counter-text {
+                font-size: 1rem;
+            }
+
+            .list-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .competition-title {
+                font-size: 1.4rem;
+            }
+
+            .list-item {
+                font-size: 0.95rem;
+                padding: 12px 14px;
+            }
+
+            .note-box p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .counter-section {
+                padding: 15px 18px;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .title-main {
+                font-size: 1.3rem;
+            }
+
+            .title-main .highlight {
+                font-size: 1.6rem;
+            }
+
+            .counter-number {
+                font-size: 2.2rem;
+                min-width: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+
+        <!-- ส่วนหัว -->
+        <div class="header">
+            <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+            <div class="sub-arabic">المهرجان</div>
+            <h1 class="title-main">
+                กิจกรรมการแข่งขันวานเฟ้นหา<br>
+                <span class="highlight">ดาเด่น ครั้งที่ 8</span><br>
+                ปี 2026
+            </h1>
+            <div class="salam">
+                <i class="fas fa-hand-peace"></i>
+                السلام عليكم ورحمة الله وبركاته
+                <i class="fas fa-hand-peace"></i>
+            </div>
+        </div>
+
+        <!-- กล่องขออภัย -->
+        <div class="apology-box">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h2>ขออภัยในความไม่สะดวก</h2>
+            <p>เกิดความขัดข้องทางเทคนิคในขณะนี้</p>
+            <p>ทางทีมงานกำลังเร่งดำเนินการแก้ไขอย่างเร่งด่วน</p>
+            <span class="urgent">⏳ กรุณาเข้าชมใหม่อีกครั้งในภายหลัง</span>
+        </div>
+
+        <!-- ตัวนับผู้เข้าชมแบบเรียลไทม์ -->
+        <div class="counter-section">
+            <i class="fas fa-eye counter-icon"></i>
+            <span class="counter-text">จำนวนผู้เข้าชมขณะนี้</span>
+            <span class="counter-number" id="viewerCount">0</span>
+            <span class="live-badge">LIVE</span>
+        </div>
+
+        <!-- รายการแข่งขัน -->
+        <div class="competition-title">
+            <i class="fas fa-trophy"></i>
+            รายการแข่งขันทั้งหมด 12 รายการ
+            <i class="fas fa-trophy"></i>
+        </div>
+
+        <div class="list-grid">
+            <div class="list-item"><span class="num">1</span><span class="name">ท่องจำอัลกุรอ่าน</span></div>
+            <div class="list-item"><span class="num">2</span><span class="name">มูร็อตตัล</span></div>
+            <div class="list-item"><span class="num">3</span><span class="name">แฟนพันธุ์แท้</span></div>
+            <div class="list-item"><span class="num">4</span><span class="name">ตัดต่อวิดีโอ</span></div>
+            <div class="list-item"><span class="num">5</span><span class="name">เขียนบทความ</span></div>
+            <div class="list-item"><span class="num">6</span><span class="name">อ่านคุตบะฮ์</span></div>
+            <div class="list-item"><span class="num">7</span><span class="name">เขียนค็อต</span></div>
+            <div class="list-item"><span class="num">8</span><span class="name">โต้วาที</span></div>
+            <div class="list-item"><span class="num">9</span><span class="name">ภาษา</span></div>
+            <div class="list-item"><span class="num">10</span><span class="name">วัดไหวพริบ</span></div>
+            <div class="list-item"><span class="num">11</span><span class="name">อาซาน</span></div>
+            <div class="list-item"><span class="num">12</span><span class="name">อานาชีด</span></div>
+        </div>
+
+        <!-- หมายเหตุ -->
+        <div class="note-box">
+            <p>
+                <i class="fas fa-bullhorn" style="color:#d4af37;"></i>
+                ขอให้ทุกท่านเตรียมตัวซ้อมและฝึกฝนกันได้เลยนะครับ
+                <br>
+                ส่วนรายละเอียด วัน เวลา และเกณฑ์การแข่งขันอย่างเป็นทางการ
+                <br>
+                ทางเราจะแจ้งให้ทราบอีกครั้งเร็วๆ นี้
+            </p>
+            <div class="dua">جَزَاكُمُ اللَّهُ خَيْرًا</div>
+            <div class="dua-trans">ญะซากุมุลลอฮุ ค็อยร็อน</div>
+        </div>
+
+        <!-- ปุ่ม -->
+        <div class="btn-group">
+            <a href="#" class="btn btn-primary" onclick="refreshPage(event)">
+                <i class="fas fa-sync-alt"></i> ลองใหม่อีกครั้ง
+            </a>
+            <a href="#" class="btn btn-outline" onclick="notifyMe(event)">
+                <i class="fas fa-bell"></i> แจ้งเตือนฉัน
+            </a>
+        </div>
+
+        <!-- ท้าย -->
+        <div class="footer-note">
+            <i class="fas fa-mosque"></i>
+            ขออภัยในความไม่สะดวก • ทีมงานالمهرجان
+            <i class="fas fa-mosque"></i>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // ระบบนับจำนวนผู้เข้าชมแบบเรียลไทม์
+        // ใช้ localStorage จำลองการนับร่วมกันในเบราว์เซอร์เดียว
+        // และใช้ BroadcastChannel + storage event เพื่อ sync ข้ามแท็บ
+        // ============================================
+
+        (function() {
+            const COUNTER_KEY = 'mahrjan_viewer_count';
+            const SESSION_KEY = 'mahrjan_session_id';
+            const viewerEl = document.getElementById('viewerCount');
+
+            // สร้าง session id เฉพาะสำหรับแท็บนี้
+            function getSessionId() {
+                let sid = sessionStorage.getItem(SESSION_KEY);
+                if (!sid) {
+                    sid = 'sid_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+                    sessionStorage.setItem(SESSION_KEY, sid);
+                }
+                return sid;
+            }
+
+            // อ่านจำนวนปัจจุบัน
+            function getCount() {
+                const val = localStorage.getItem(COUNTER_KEY);
+                return val ? parseInt(val, 10) : 0;
+            }
+
+            // บันทึกจำนวน
+            function setCount(n) {
+                const newVal = Math.max(0, n);
+                localStorage.setItem(COUNTER_KEY, newVal);
+                return newVal;
+            }
+
+            // อัปเดต UI
+            function updateUI(count, animate = false) {
+                if (!viewerEl) return;
+                viewerEl.textContent = count;
+                if (animate) {
+                    viewerEl.classList.add('bump');
+                    setTimeout(() => viewerEl.classList.remove('bump'), 300);
+                }
+            }
+
+            // ลงทะเบียนผู้เข้าชมใหม่ (เพิ่ม 1)
+            function registerViewer() {
+                let count = getCount();
+                count = setCount(count + 1);
+                updateUI(count, true);
+                return count;
+            }
+
+            // ลดจำนวนเมื่อออก
+            function unregisterViewer() {
+                let count = getCount();
+                count = setCount(count - 1);
+                updateUI(count, false);
+                return count;
+            }
+
+            // เริ่มต้น
+            const initialCount = registerViewer();
+
+            // Sync ข้ามแท็บด้วย storage event
+            window.addEventListener('storage', function(e) {
+                if (e.key === COUNTER_KEY) {
+                    const newCount = e.newValue ? parseInt(e.newValue, 10) : 0;
+                    updateUI(newCount, true);
+                }
+            });
+
+            // Sync ด้วย BroadcastChannel (ถ้ารองรับ)
+            let bc = null;
+            if (typeof BroadcastChannel !== 'undefined') {
+                bc = new BroadcastChannel('mahrjan_counter');
+                bc.onmessage = function(e) {
+                    if (e.data && e.data.type === 'count_update') {
+                        updateUI(e.data.count, true);
+                    }
+                };
+            }
+
+            // แจ้งเพื่อนแท็บเมื่อมีการเปลี่ยนแปลง
+            function broadcastCount(count) {
+                if (bc) {
+                    bc.postMessage({ type: 'count_update', count: count });
+                }
+            }
+
+            // override setCount เพื่อ broadcast
+            const originalSetCount = setCount;
+            setCount = function(n) {
+                const val = originalSetCount(n);
+                broadcastCount(val);
+                return val;
+            };
+
+            // เมื่อผู้ใช้ปิด/ออกจากหน้า
+            window.addEventListener('beforeunload', function() {
+                unregisterViewer();
+            });
+
+            // กรณี tab ถูกซ่อน/แสดง (อาจนับเฉพาะเมื่อ visible)
+            // แต่เพื่อความง่าย เรานับเฉพาะตอนโหลดและ beforeunload
+
+            // อัปเดต UI ครั้งแรก
+            updateUI(initialCount, false);
+
+            // จำลองการเปลี่ยนแปลงแบบสุ่มเล็กน้อยเพื่อให้ดูเรียลไทม์ (optional)
+            // เพื่อให้เห็นการขยับของตัวเลข
+            setInterval(function() {
+                // สุ่ม 30% ที่จะมีการเปลี่ยนแปลงเล็กน้อย
+                if (Math.random() < 0.3) {
+                    // สุ่ม +1 หรือ -1 แต่ไม่ให้ต่ำกว่า 1
+                    const current = getCount();
+                    if (current > 1 && Math.random() < 0.5) {
+                        // ลดลง (จำลองคนออก)
+                        const newCount = setCount(current - 1);
+                        updateUI(newCount, true);
+                    } else {
+                        // เพิ่มขึ้น (จำลองคนเข้า)
+                        const newCount = setCount(current + 1);
+                        updateUI(newCount, true);
+                    }
+                }
+            }, 4000);
+
+            // เก็บฟังก์ชันไว้ใช้ในปุ่ม
+            window.__refreshViewer = function() {
+                const c = getCount();
+                updateUI(c, true);
+            };
+
+        })();
+
+        // ============================================
+        // ปุ่มต่างๆ
+        // ============================================
+
+        function refreshPage(e) {
+            e.preventDefault();
+            // จำลองการรีเฟรช
+            const btn = e.currentTarget;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังโหลด...';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+                // อัปเดตตัวนับ
+                if (window.__refreshViewer) window.__refreshViewer();
+                // แสดงข้อความ
+                alert('ขออภัย ระบบยังอยู่ระหว่างการแก้ไข\nกรุณาลองใหม่อีกครั้งในภายหลัง');
+            }, 1200);
+        }
+
+        function notifyMe(e) {
+            e.preventDefault();
+            alert('✅ ระบบจะแจ้งเตือนคุณเมื่อการแข่งขันเปิดรับสมัครอย่างเป็นทางการ\n\nجزاكم الله خيرا');
+        }
+
+        // แจ้งเตือนเมื่อคลิกที่กล่องขออภัย
+        document.querySelector('.apology-box')?.addEventListener('click', function() {
+            // ไม่ทำอะไร แค่ให้รู้ว่าคลิกได้
+        });
+
+        // เลื่อนดูรายการได้
+        console.log('เว็บไซต์พร้อมใช้งาน • กิจกรรมการแข่งขันวานเฟ้นหาดาเด่น ครั้งที่ 8 ปี 2026');
+    </script>
+</body>
+</html>
