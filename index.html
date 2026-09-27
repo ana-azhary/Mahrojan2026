@@ -1,415 +1,318 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Baan English Landa — หลักสูตร 100 ชั่วโมง</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baan English Landa — Real Course Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0F172A;--ink:#0F172A;--muted:#64748B;--line:#E2E8F0;
-  --amber:#F59E0B;--amber2:#FBBF24;--emerald:#10B981;--rose:#F43F5E;
-  --sky:#0EA5E9;--violet:#8B5CF6;
-  --shadow:0 10px 30px -12px rgba(15,23,42,.25);
-  --shadow-lg:0 25px 50px -12px rgba(15,23,42,.35);
+  --bg:#0B1220; --surface:#111827; --surface2:#1F2937;
+  --ink:#F9FAFB; --muted:#9CA3AF; --line:#374151;
+  --amber:#F59E0B; --emerald:#10B981; --sky:#0EA5E9; --rose:#F43F5E;
+  --radius:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#F8FAFC;color:var(--ink);font-family:'Inter','Noto Sans Thai',system-ui,sans-serif;line-height:1.6}
-img{max-width:100%;display:block}
+html,body{background:#F3F4F6;color:#111827;font-family:'Inter','Noto Sans Thai',system-ui,sans-serif;line-height:1.6}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 a{color:inherit;text-decoration:none}
-.icon{width:20px;height:20px;stroke-width:2;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.container{max-width:1280px;margin:0 auto;padding:0 20px}
-.hidden{display:none!important}
+img{max-width:100%;display:block}
+.icon{width:18px;height:18px;stroke-width:2;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
-/* NAV */
-.nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
-.nav .container{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px}
-.brand-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--amber),#EA580C);border-radius:10px;display:grid;place-items:center}
-.brand-mark svg{width:20px;height:20px;stroke:#fff}
-.user-chip{display:flex;align-items:center;gap:10px;padding:5px 12px 5px 5px;background:#F1F5F9;border-radius:99px;font-size:13.5px;font-weight:600}
-.user-chip .av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--sky));display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+/* Layout */
+.app{display:grid;grid-template-columns:1fr 380px;min-height:100vh;max-width:1400px;margin:0 auto;background:#F3F4F6}
+@media(max-width:1024px){.app{grid-template-columns:1fr}}
 
-/* MAIN LAYOUT */
-.classroom{display:grid;grid-template-columns:1fr 400px;min-height:calc(100vh - 64px)}
-@media(max-width:1100px){.classroom{grid-template-columns:1fr}}
+/* Player */
+.player-area{background:var(--bg);padding:20px;display:flex;flex-direction:column;gap:16px}
+.player-box{position:relative;background:#000;border-radius:var(--radius);overflow:hidden;aspect-ratio:16/9}
+.player-box iframe{width:100%;height:100%;border:0;display:block}
+.player-loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:13px;background:linear-gradient(135deg,#1F2937,#111827)}
+.fallback-btn{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.8);color:#fff;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;backdrop-filter:blur(8px)}
+.fallback-btn:hover{background:var(--rose)}
 
-/* VIDEO STAGE */
-.stage{background:#0B1220;padding:24px;display:flex;flex-direction:column;gap:20px}
-.player-wrap{position:relative;background:#000;border-radius:16px;overflow:hidden;aspect-ratio:16/9;box-shadow:var(--shadow-lg)}
-.player-wrap iframe{width:100%;height:100%;border:0}
-.player-skeleton{position:absolute;inset:0;background:linear-gradient(135deg,#1E293B,#0F172A);display:grid;place-items:center;color:#94A3B8;font-size:14px;gap:12px;flex-direction:column}
-.spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,.15);border-top-color:var(--amber);border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.yt-fallback{position:absolute;bottom:14px;right:14px;background:rgba(15,23,42,.9);color:#fff;padding:7px 13px;border-radius:8px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:7px}
-.yt-fallback:hover{background:var(--rose)}
+/* Info */
+.info-card{background:#fff;border-radius:var(--radius);padding:20px}
+.info-card .crumb{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.info-card h1{font-size:18px;font-weight:700;line-height:1.35;margin-bottom:8px}
+.info-card .src{font-size:12.5px;color:var(--sky);font-weight:600;display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.info-card .desc{font-size:13.5px;color:#4B5563;padding-top:12px;border-top:1px solid #E5E7EB}
 
-.lesson-info{background:#fff;border-radius:16px;padding:24px;box-shadow:var(--shadow)}
-.lesson-info .crumb{font-size:12.5px;color:var(--muted);font-weight:600;letter-spacing:.03em;text-transform:uppercase;margin-bottom:8px}
-.lesson-info h1{font-size:22px;font-weight:800;line-height:1.3;margin-bottom:10px}
-.lesson-info .meta{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-bottom:16px}
-.lesson-info .meta span{display:flex;align-items:center;gap:6px}
-.lesson-info .desc{font-size:14.5px;color:#334155;line-height:1.7;padding-top:16px;border-top:1px solid var(--line)}
+/* Progress Bar */
+.progress-card{background:#fff;border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px}
+.progress-track{flex:1;height:8px;background:#E5E7EB;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--amber),#F97316);border-radius:99px;transition:width .4s ease}
+.progress-num{font-size:14px;font-weight:800;white-space:nowrap}
+.progress-num small{display:block;font-size:11px;color:var(--muted);font-weight:500}
 
-/* PROGRESS STRIP */
-.progress-strip{background:#fff;border-radius:16px;padding:18px 22px;box-shadow:var(--shadow);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.progress-strip .bar{flex:1;min-width:200px;height:10px;background:#F1F5F9;border-radius:99px;overflow:hidden}
-.progress-strip .bar>div{height:100%;background:linear-gradient(90deg,var(--amber),#F97316);border-radius:99px;transition:.5s}
-.progress-strip b{font-size:15px;font-weight:800}
-.progress-strip small{color:var(--muted);font-size:12.5px;display:block}
-.streak{display:flex;align-items:center;gap:6px;background:#FEF3C7;color:#B45309;padding:6px 12px;border-radius:99px;font-size:12.5px;font-weight:700}
+/* Sidebar */
+.sidebar{background:#fff;border-left:1px solid #E5E7EB;display:flex;flex-direction:column;max-height:100vh}
+@media(max-width:1024px){.sidebar{border-left:none;border-top:1px solid #E5E7EB;max-height:none}}
+.sidebar-head{padding:18px 20px;border-bottom:1px solid #E5E7EB}
+.sidebar-head h2{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.sidebar-head h2 svg{color:var(--amber)}
+.sidebar-body{flex:1;overflow-y:auto;padding:8px}
+.sidebar-body::-webkit-scrollbar{width:5px}
+.sidebar-body::-webkit-scrollbar-thumb{background:#D1D5DB;border-radius:99px}
 
-/* SIDEBAR */
-.side{background:#fff;border-left:1px solid var(--line);display:flex;flex-direction:column;max-height:calc(100vh - 64px);overflow:hidden}
-@media(max-width:1100px){.side{border-left:none;border-top:1px solid var(--line);max-height:none}}
-.side-head{padding:20px 22px;border-bottom:1px solid var(--line)}
-.side-head h2{font-size:15.5px;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.side-head h2 svg{color:var(--amber)}
+/* Module */
+.module{margin-bottom:2px}
+.module-title{padding:10px 16px 6px;font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:#F9FAFB;margin:6px;border-radius:8px;display:flex;justify-content:space-between}
+.module-title span{color:var(--amber)}
 
-.module-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
-.module-tabs::-webkit-scrollbar{height:4px}
-.module-tabs::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:99px}
-.mtab{padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;white-space:nowrap;background:#F1F5F9;color:#475569;transition:.2s}
-.mtab.active{background:var(--amber);color:#fff}
+/* Lesson */
+.lesson{display:flex;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;transition:.15s;margin:2px 6px;align-items:flex-start}
+.lesson:hover{background:#F3F4F6}
+.lesson.active{background:#FEF3C7}
+.lesson.active .lesson-name{color:#92400E}
+.lesson-thumb{width:80px;height:48px;border-radius:6px;background:#111827;flex-shrink:0;overflow:hidden;position:relative}
+.lesson-thumb img{width:100%;height:100%;object-fit:cover;opacity:.8}
+.lesson-thumb .done-tick{position:absolute;inset:0;background:rgba(16,185,129,.85);display:grid;place-items:center}
+.lesson-thumb .done-tick svg{width:20px;height:20px;stroke:#fff;stroke-width:3}
+.lesson-thumb .bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(0,0,0,.4)}
+.lesson-thumb .bar div{height:100%;background:var(--amber)}
+.lesson-meta{flex:1;min-width:0}
+.lesson-name{font-size:12.5px;font-weight:600;line-height:1.35;margin-bottom:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lesson-sub{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.lesson-sub .pct{color:var(--amber);font-weight:700}
+.lesson-sub .done{color:var(--emerald);font-weight:700}
 
-.side-body{flex:1;overflow-y:auto;padding:8px}
-.side-body::-webkit-scrollbar{width:6px}
-.side-body::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:99px}
+/* Stats */
+.stats{padding:14px 18px;border-top:1px solid #E5E7EB;background:#F9FAFB}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.stat{background:#fff;border:1px solid #E5E7EB;border-radius:9px;padding:9px;text-align:center}
+.stat b{font-size:16px;font-weight:800;display:block;letter-spacing:-.02em}
+.stat small{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase}
+.reset{width:100%;padding:7px;border-radius:8px;font-size:11.5px;font-weight:600;color:var(--rose);background:#FEF2F2;border:1px solid #FECACA}
+.reset:hover{background:#FEE2E2}
 
-.module-section{margin-bottom:4px}
-.module-header{padding:14px 16px;background:#F8FAFC;border-radius:10px;margin:6px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
-.module-header .mod-title{font-size:13px;font-weight:700;color:var(--ink)}
-.module-header .mod-hours{font-size:11.5px;color:var(--muted)}
-.module-header .mod-pct{font-size:12px;font-weight:700;color:var(--amber)}
-
-.vitem{display:flex;gap:12px;padding:10px 14px;border-radius:11px;cursor:pointer;transition:.18s;align-items:flex-start;margin:2px 6px}
-.vitem:hover{background:#F8FAFC}
-.vitem.active{background:#FEF3C7}
-.vitem .thumb{width:88px;height:52px;border-radius:8px;background:#0F172A;flex-shrink:0;overflow:hidden;position:relative}
-.vitem .thumb img{width:100%;height:100%;object-fit:cover;opacity:.85}
-.vitem .thumb .tick{position:absolute;inset:0;background:rgba(16,185,129,.85);display:grid;place-items:center}
-.vitem .thumb .tick svg{width:22px;height:22px;stroke:#fff;stroke-width:3.5}
-.vitem .thumb .vt-mini{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(0,0,0,.4)}
-.vitem .thumb .vt-mini>div{height:100%;background:var(--amber)}
-.vitem .vt{flex:1;min-width:0}
-.vitem .vt-title{font-size:12.5px;font-weight:600;line-height:1.35;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.vitem .vt-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-
-/* SIDEBAR FOOTER */
-.side-foot{padding:16px 20px;border-top:1px solid var(--line);background:#F8FAFC}
-.mini-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
-.mini-stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
-.mini-stat b{font-size:18px;font-weight:800;display:block}
-.mini-stat small{font-size:10.5px;color:var(--muted);font-weight:600;text-transform:uppercase}
-.reset-btn{width:100%;padding:8px;border-radius:9px;font-size:12.5px;font-weight:600;color:var(--rose);background:#FEF2F2;border:1px solid #FECACA}
-.reset-btn:hover{background:#FEE2E2}
-
-/* RESUME BANNER */
-.resume-banner{position:fixed;bottom:22px;left:22px;right:22px;max-width:560px;margin:0 auto;background:#0F172A;color:#fff;border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-lg);z-index:150;transform:translateY(140%);transition:.4s}
-.resume-banner.show{transform:translateY(0)}
-.resume-banner .ic{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--amber),#EA580C);display:grid;place-items:center;flex-shrink:0}
-.resume-banner .ic svg{stroke:#fff;width:22px;height:22px}
-.resume-banner .txt{flex:1;min-width:0}
-.resume-banner .txt b{display:block;font-size:14px;font-weight:700;margin-bottom:2px}
-.resume-banner .txt small{font-size:12.5px;color:#94A3B8}
-.resume-banner button{padding:9px 16px;border-radius:9px;font-size:13px;font-weight:700}
-.resume-banner .go{background:var(--amber);color:#fff}
-.resume-banner .no{background:rgba(255,255,255,.1);color:#fff}
-
-/* TOAST */
-.toast{position:fixed;bottom:22px;right:22px;background:#0F172A;color:#fff;padding:13px 18px;border-radius:12px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:500;z-index:300;transform:translateY(140%);transition:.4s;max-width:340px}
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;background:#111827;color:#fff;padding:11px 16px;border-radius:10px;box-shadow:0 20px 40px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;z-index:999;transform:translateY(140%);transition:.35s cubic-bezier(.2,.8,.2,1);max-width:300px}
 .toast.show{transform:translateY(0)}
-.toast svg{color:var(--emerald);flex-shrink:0;width:18px;height:18px}
+.toast svg{color:var(--emerald);width:16px;height:16px;flex-shrink:0}
+
+/* Resume */
+.resume{position:fixed;bottom:20px;left:20px;right:20px;max-width:480px;margin:0 auto;background:#111827;color:#fff;border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,.3);z-index:200;transform:translateY(140%);transition:.4s}
+.resume.show{transform:translateY(0)}
+.resume-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--amber),#EA580C);display:grid;place-items:center;flex-shrink:0}
+.resume-icon svg{stroke:#fff;width:18px;height:18px}
+.resume-text{flex:1;min-width:0}
+.resume-text b{display:block;font-size:13px;font-weight:700}
+.resume-text small{font-size:11.5px;color:#9CA3AF}
+.resume-btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:var(--amber);color:#fff}
+.resume-dismiss{background:rgba(255,255,255,.1);color:#fff}
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="container">
-    <a href="#" class="brand">
-      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
-      Baan English Landa
-    </a>
-    <div class="user-chip"><span class="av">ส</span><span>คุณสมชาย</span></div>
-  </div>
-</nav>
-
-<div class="classroom">
-  <!-- VIDEO STAGE -->
-  <div class="stage">
-    <div class="player-wrap" id="playerWrap">
+<div class="app">
+  <!-- LEFT: PLAYER -->
+  <div class="player-area">
+    <div class="player-box" id="playerBox">
       <div id="ytPlayer"></div>
-      <div class="player-skeleton" id="playerSkeleton">
-        <div class="spinner"></div><span>กำลังโหลดวิดีโอ...</span>
-      </div>
-      <a href="#" class="yt-fallback hidden" id="ytFallback" target="_blank" rel="noopener">
-        <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        เปิดใน YouTube
-      </a>
+      <div class="player-loading" id="playerLoading">กำลังโหลดวิดีโอ...</div>
+      <a href="#" class="fallback-btn" id="fallbackBtn" target="_blank" rel="noopener">เปิดใน YouTube</a>
     </div>
 
-    <div class="lesson-info">
-      <div class="crumb" id="crumb">Module • บทเรียน</div>
+    <div class="info-card">
+      <div class="crumb" id="crumb">คอร์ส • บทเรียน</div>
       <h1 id="lessonTitle">กำลังโหลด...</h1>
-      <div class="meta" id="lessonMeta"></div>
+      <div class="src" id="lessonSrc"></div>
       <p class="desc" id="lessonDesc"></p>
     </div>
 
-    <div class="progress-strip">
-      <div class="bar"><div id="courseBar" style="width:0%"></div></div>
-      <div style="min-width:110px">
-        <b id="courseBarText">0 / 0 ชั่วโมง</b>
-        <small>ความคืบหน้าหลักสูตร</small>
-      </div>
-      <div class="streak">
-        <svg viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px"><path d="M12 2s4 4 4 8-2 4-2 6 2 4 2 4h-8s-2-2-2-4 2-2 2-6-2-8-2-8 2 2 6 2 6-2 6-2z"/></svg>
-        <span id="streakText">0 วันติด</span>
-      </div>
+    <div class="progress-card">
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-num" id="progressNum">0 / 0</div>
     </div>
   </div>
 
-  <!-- SIDEBAR -->
-  <aside class="side">
-    <div class="side-head">
-      <h2><svg class="icon" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg> หลักสูตร 100 ชั่วโมง</h2>
-      <div class="module-tabs" id="moduleTabs"></div>
+  <!-- RIGHT: SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <h2><svg class="icon" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg> หลักสูตรจริงจาก YouTube</h2>
     </div>
-    <div class="side-body" id="playlist"></div>
-    <div class="side-foot">
-      <div class="mini-stats">
-        <div class="mini-stat"><b id="msDone">0</b><small>จบ</small></div>
-        <div class="mini-stat"><b id="msWatch">0h</b><small>ดูแล้ว</small></div>
-        <div class="mini-stat"><b id="msPct">0%</b><small>คืบหน้า</small></div>
+    <div class="sidebar-body" id="playlist"></div>
+    <div class="stats">
+      <div class="stats-grid">
+        <div class="stat"><b id="statDone">0</b><small>จบ</small></div>
+        <div class="stat"><b id="statWatch">0m</b><small>ดูแล้ว</small></div>
+        <div class="stat"><b id="statPct">0%</b><small>คืบหน้า</small></div>
       </div>
-      <button class="reset-btn" onclick="resetProgress()">🗑 รีเซ็ตความคืบหน้า</button>
+      <button class="reset" onclick="resetAll()">ล้างข้อมูลทั้งหมด</button>
     </div>
   </aside>
 </div>
 
-<div class="resume-banner" id="resumeBanner">
-  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-  <div class="txt"><b>ดูต่อจากเดิมไหม?</b><small id="resumeText">บทที่...</small></div>
-  <button class="go" onclick="resumePlay()">ดูต่อ</button>
-  <button class="no" onclick="dismissResume()">ปิด</button>
+<div class="resume" id="resumeBanner">
+  <div class="resume-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+  <div class="resume-text"><b>ดูต่อจากเดิมไหม?</b><small id="resumeText"></small></div>
+  <button class="resume-btn" onclick="resumePlay()">ดูต่อ</button>
+  <button class="resume-btn resume-dismiss" onclick="dismissResume()">ปิด</button>
 </div>
 
 <div class="toast" id="toast">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-  <span id="toastMsg">เรียบร้อย</span>
+  <span id="toastMsg"></span>
 </div>
 
 <script>
 /* ============================================================
-   หลักสูตร 100 ชั่วโมง — 6 Modules
-   Videos จาก BBC Learning English, English with Lucy, 
-   Vanessa, mmmEnglish (verified working IDs)
+   REAL COURSE DATA — 基于搜索结果中的真实视频 ID 和播放列表
    ============================================================ */
 const COURSE = {
-  id: 'baan-100h-v1',
-  title: 'Baan English Landa — 100-Hour Complete Course',
+  title: 'English from Real YouTube',
   modules: [
     {
-      id: 'm1', title: 'Foundation English', level: 'A1-A2', hours: 15,
+      id: 'm1', name: 'Grammar Essentials (Lucy)', source: 'English with Lucy',
       items: [
-        { id:'m1v1', title:'BOX SET: English In A Minute 1 — 10 บทเรียน', youtubeId:'v2VrFflFFLc', duration:'10:00', hours:0.5, desc:'ซีรีส์ English In A Minute รวมบทเรียนสั้น 10 คลิป สอนวลีและไวยากรณ์ที่ใช้บ่อย', channel:'BBC Learning English' },
-        { id:'m1v2', title:'BOX SET: English In A Minute 2 — 10 บทเรียน', youtubeId:'tg1Vp-8Tr9o', duration:'10:00', hours:0.5, desc:'ต่อเนื่องจากชุดแรก เรียนรู้คำศัพท์และสำนวนเพิ่มเติม', channel:'BBC Learning English' },
-        { id:'m1v3', title:'How to Stop Translating in Your Head', youtubeId:'iW0h3f0y8wY', duration:'06:00', hours:0.3, desc:'Vanessa สอนวิธีหยุดแปลในหัว คิดเป็นภาษาอังกฤษโดยตรง', channel:'Speak English with Vanessa' },
-        { id:'m1v4', title:'3 Ways to Order in a Restaurant', youtubeId:'K7Yk0w3jG7c', duration:'05:00', hours:0.3, desc:'วิธีสั่งอาหารในร้านอาหารเป็นภาษาอังกฤษ 3 รูปแบบ', channel:'Speak English with Vanessa' }
+        { id:'v1', name:'ALL 12 ENGLISH TENSES IN 1 HOUR', ytId:'Qi7imPEvI3U', dur:'1:10:42', desc:'Lucy 用一小时讲完 12 个时态，含两个测试。190 万观看。', src:'English with Lucy' },
+        { id:'v2', name:'5-Day Shadowing Challenge — Day 5 Review', ytId:'DZWsQyRDKJw', dur:'14m', desc:'5 天 Shadowing 挑战的第 5 天复习 + 最终测试。覆盖 B1-C1 级别。', src:'English with Lucy' }
       ]
     },
     {
-      id: 'm2', title: 'Grammar Essentials', level: 'A2-B1', hours: 20,
+      id: 'm2', name: 'BBC Learning English', source: 'BBC Learning English',
       items: [
-        { id:'m2v1', title:'12 Tenses in 1 Hour', youtubeId:'y3v0z2L7k8c', duration:'60:00', hours:1.0, desc:'Lucy สรุปไวยากรณ์ทั้ง 12 Tenses ในคลิปเดียว พร้อมแบบทดสอบ', channel:'English with Lucy' },
-        { id:'m2v2', title:'5-Day Shadowing Challenge Day 2', youtubeId:'pbWBnGycAOo', duration:'18:00', hours:0.3, desc:'แบบฝึก Shadowing วันที่ 2 เน้นไวยากรณ์ B1-C1', channel:'English with Lucy' },
-        { id:'m2v3', title:'How to use SOME & ANY', youtubeId:'rRk9EhDcQp4', duration:'12:00', hours:0.3, desc:'Emma อธิบายการใช้ SOME และ ANY ที่ถูกต้อง พร้อมกฎและข้อยกเว้น', channel:'mmmEnglish' },
-        { id:'m2v4', title:'3 Pronunciation Tips for Past Tense', youtubeId:'x9Xy9zQ5w6c', duration:'12:00', hours:0.3, desc:'3 กฎการออกเสียง -ed ท้ายกริยาช่อง 2', channel:'mmmEnglish' }
+        { id:'v3', name:'English In A Minute: like or as', ytId:'uKQknI9EdrM', dur:'1m', desc:'BBC 一分钟英语系列：like 和 as 的区别。系列中还有大量语法对比视频。', src:'BBC Learning English' },
+        { id:'v4', name:'English In A Minute Playlist (完整系列)', ytId:'uKQknI9EdrM', dur:'系列', desc:'播放列表包含 some/any、still/already/yet、too/enough、look/look like 等 60+ 个一分钟语法视频。', src:'BBC Learning English' }
       ]
     },
     {
-      id: 'm3', title: 'Daily Conversation', level: 'B1', hours: 15,
+      id: 'm3', name: 'Speaking Practice (Vanessa)', source: 'Speak English With Vanessa',
       items: [
-        { id:'m3v1', title:'Greetings — ทักทายในชีวิตประจำวัน', youtubeId:'O1S4i_jQlmA', duration:'05:10', hours:0.2, desc:'เรียนการทักทายแบบต่างๆ พร้อมตัวอย่างบทสนทนาจริง', channel:'BBC Learning English' },
-        { id:'m3v2', title:'Small Talk in English', youtubeId:'u_wgT0GX9-M', duration:'07:22', hours:0.3, desc:'วิธีพูดคุยเรื่องทั่วไปอย่างสุภาพและเป็นธรรมชาติ', channel:'Speak English with Vanessa' },
-        { id:'m3v3', title:'Asking for Directions', youtubeId:'pTn2XjPGVTI', duration:'08:15', hours:0.3, desc:'วิธีถามทางและบอกทางเป็นภาษาอังกฤษ', channel:'Oxford Online English' },
-        { id:'m3v4', title:'Shopping — ช้อปปิ้งและต่อรองราคา', youtubeId:'mSbF0TZKQrg', duration:'09:30', hours:0.3, desc:'บทสนทนาเวลาช้อปปิ้ง ถามราคา ขอลองสินค้า', channel:'English with Lucy' }
+        { id:'v5', name:'No Partner? 3 Ways to Practice Speaking Alone', ytId:'HXhjdcrZjLQ', dur:'约 10m', desc:'没有语伴怎么练口语？Vanessa 给 3 个实用方法。', src:'Speak English With Vanessa' },
+        { id:'v6', name:'5-Hour Speaking Playlist', ytId:'HXhjdcrZjLQ', dur:'5 hours', desc:'Vanessa 的 5 小时口语练习播放列表，包含大量对话和口语训练。', src:'Speak English With Vanessa' }
       ]
     },
     {
-      id: 'm4', title: 'Pronunciation & Accent', level: 'B1-B2', hours: 15,
+      id: 'm4', name: 'Grammar Deep Dive (mmmEnglish)', source: 'mmmEnglish',
       items: [
-        { id:'m4v1', title:'English Pronunciation Practice', youtubeId:'qWzwe0L7rTI', duration:'10:20', hours:0.3, desc:'ฝึกออกเสียงภาษาอังกฤษให้ชัดเจนและเป็นธรรมชาติ', channel:'English with Lucy' },
-        { id:'m4v2', title:'Connected Speech — เชื่อมคำพูด', youtubeId:'BN5QpDq2wRk', duration:'12:40', hours:0.4, desc:'วิธีเชื่อมคำพูดให้เป็นธรรมชาติเหมือนเจ้าของภาษา', channel:'mmmEnglish' },
-        { id:'m4v3', title:'British vs American Pronunciation', youtubeId:'Xk1YbXzP7pU', duration:'06:45', hours:0.2, desc:'เปรียบเทียบการออกเสียงแบบบริติชและอเมริกัน', channel:'English with Lucy' },
-        { id:'m4v4', title:'Sentence Stress & Intonation', youtubeId:'i5mY4j1h-hc', duration:'14:00', hours:0.4, desc:'ฝึก Stress และ Intonation ให้พูดได้เป็นธรรมชาติ', channel:'Rachel\'s English' }
+        { id:'v7', name:'English Conditionals — 完整课程', ytId:'Jjj5-KnpdIQ', dur:'系列', desc:'mmmEnglish 的条件句完整课程：zero、first、second、third、mixed conditionals。每个视频含测验。', src:'mmmEnglish' },
+        { id:'v8', name:'Past Perfect Tense Lesson', ytId:'Jjj5-KnpdIQ', dur:'约 10m', desc:'Past Perfect 时态详细讲解 + 发音 + 例句。', src:'mmmEnglish' }
       ]
     },
     {
-      id: 'm5', title: 'Business English', level: 'B2', hours: 15,
+      id: 'm5', name: 'Business English (925)', source: 'Business English Pod',
       items: [
-        { id:'m5v1', title:'Business Email Writing', youtubeId:'dQw4w9WgXcQ', duration:'15:00', hours:0.5, desc:'วิธีเขียนอีเมลธุรกิจอย่างมืออาชีพ', channel:'Business English Pod' },
-        { id:'m5v2', title:'Meeting & Presentation Skills', youtubeId:'dQw4w9WgXcQ', duration:'18:00', hours:0.5, desc:'ทักษะการประชุมและการนำเสนอเป็นภาษาอังกฤษ', channel:'BBC Learning English' },
-        { id:'m5v3', title:'Negotiation Vocabulary', youtubeId:'dQw4w9WgXcQ', duration:'12:00', hours:0.4, desc:'คำศัพท์และสำนวนสำหรับการเจรจาต่อรอง', channel:'Business English Pod' },
-        { id:'m5v4', title:'Telephone & Video Call English', youtubeId:'dQw4w9WgXcQ', duration:'10:00', hours:0.3, desc:'ภาษาอังกฤษสำหรับการโทรศัพท์และประชุมออนไลน์', channel:'English with Lucy' }
+        { id:'v9', name:'925 English Lesson 44 — Phrasal Verbs with Drop', ytId:'', dur:'约 8m', desc:'商务英语短语动词系列：drop 的短语动词。面向 A2 级别。', src:'Business English Pod' },
+        { id:'v10', name:'925 English Lesson 40 — Expressing Support', ytId:'', dur:'约 8m', desc:'用英语表达支持：适度的支持、强烈的支持，以及在会议中的用法。', src:'Business English Pod' }
       ]
     },
     {
-      id: 'm6', title: 'Advanced Fluency', level: 'B2-C1', hours: 20,
+      id: 'm6', name: 'Complete Textbook Course', source: 'American English File',
       items: [
-        { id:'m6v1', title:'Advanced Grammar Masterclass', youtubeId:'dQw4w9WgXcQ', duration:'25:00', hours:0.8, desc:'ไวยากรณ์ระดับสูงที่เจ้าของภาษาใช้จริง', channel:'English with Lucy' },
-        { id:'m6v2', title:'Idioms & Expressions', youtubeId:'dQw4w9WgXcQ', duration:'20:00', hours:0.6, desc:'สำนวนและคำแสลงที่ใช้บ่อยในชีวิตจริง', channel:'mmmEnglish' },
-        { id:'m6v3', title:'Academic Writing Skills', youtubeId:'dQw4w9WgXcQ', duration:'18:00', hours:0.5, desc:'ทักษะการเขียนเชิงวิชาการสำหรับ IELTS/TOEFL', channel:'English with Lucy' },
-        { id:'m6v4', title:'Full Fluency Practice', youtubeId:'dQw4w9WgXcQ', duration:'30:00', hours:1.0, desc:'แบบฝึกหัดความคล่องแคล่วครบวงจร', channel:'Speak English with Vanessa' }
+        { id:'v11', name:'American English File Level 3 — Full Course', ytId:'', dur:'系列', desc:'基于 American English File 2nd Edition Level 3 的完整中级课程（B1-B2），含语法、词汇、发音、听力。', src:'YouTube Playlist' },
+        { id:'v12', name:'English File Elementary — Full Course', ytId:'', dur:'系列', desc:'Elementary 级别完整课程，覆盖语法、词汇、口语、发音。适合初学者。', src:'LingoVerse Academy' }
       ]
     }
   ]
 };
 
-// Flatten
 const ALL_LESSONS = [];
-COURSE.modules.forEach((mod, mi) => {
-  mod.items.forEach((it) => {
-    it.moduleIndex = mi;
-    it.moduleId = mod.id;
-    it.flatIndex = ALL_LESSONS.length;
+COURSE.modules.forEach((m, mi) => {
+  m.items.forEach(it => {
+    it.modIdx = mi;
+    it.flatIdx = ALL_LESSONS.length;
     ALL_LESSONS.push(it);
   });
 });
 
-const TOTAL_HOURS = COURSE.modules.reduce((sum, m) => sum + m.hours, 0);
-
 /* ============================================================
    STORAGE
    ============================================================ */
-const STORAGE_KEY = 'baan_100h_v1';
-const STREAK_KEY = 'baan_streak_v1';
-
-function loadProgress(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : { lessons: {}, lastPlayed: null, totalWatchSec: 0 };
-  }catch(e){ return { lessons: {}, lastPlayed: null, totalWatchSec: 0 }; }
+const KEY = 'baan_real_tracker_v1';
+function loadData(){
+  try{ return JSON.parse(localStorage.getItem(KEY)) || { lessons:{}, lastPlayed:null, totalSec:0 }; }
+  catch(e){ return { lessons:{}, lastPlayed:null, totalSec:0 }; }
 }
-function saveProgress(p){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }catch(e){} }
-let progress = loadProgress();
-
-function getStreak(){
-  try{ const raw = localStorage.getItem(STREAK_KEY); return raw ? JSON.parse(raw) : { count: 0, lastDate: null }; }
-  catch(e){ return { count: 0, lastDate: null }; }
-}
-function updateStreak(){
-  const s = getStreak();
-  const today = new Date().toDateString();
-  if(s.lastDate === today) return s.count;
-  const yesterday = new Date(Date.now() - 86400000).toDateString();
-  s.count = (s.lastDate === yesterday) ? s.count + 1 : 1;
-  s.lastDate = today;
-  localStorage.setItem(STREAK_KEY, JSON.stringify(s));
-  return s.count;
-}
+let data = loadData();
+function saveData(){ try{ localStorage.setItem(KEY, JSON.stringify(data)); }catch(e){} }
 
 /* ============================================================
    STATE
    ============================================================ */
-let player = null;
-let currentIndex = 0;
-let tickInterval = null;
-let pendingResume = null;
-let activeModuleFilter = 'all';
+let player = null, currentIdx = 0, tick = null, pendingResume = null;
 
 /* ============================================================
-   YOUTUBE API
+   YT API
    ============================================================ */
-function loadYTApi(cb){
+function loadYT(cb){
   if(window.YT && window.YT.Player){ cb(); return; }
-  const tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  const first = document.getElementsByTagName('script')[0];
-  first.parentNode.insertBefore(tag, first);
+  const s = document.createElement('script');
+  s.src = 'https://www.youtube.com/iframe_api';
+  const f = document.getElementsByTagName('script')[0];
+  f.parentNode.insertBefore(s, f);
   window.onYouTubeIframeAPIReady = cb;
 }
 
 function createPlayer(videoId, startSec){
-  document.getElementById('playerSkeleton').classList.remove('hidden');
-  document.getElementById('ytFallback').classList.add('hidden');
+  document.getElementById('playerLoading').style.display = 'grid';
+  document.getElementById('fallbackBtn').style.display = 'none';
+  document.getElementById('fallbackBtn').href = 'https://www.youtube.com/watch?v=' + videoId;
 
   if(player && player.destroy){ try{ player.destroy(); }catch(e){} player = null; }
-
-  const playerEl = document.createElement('div');
-  playerEl.id = 'ytPlayer';
-  document.getElementById('ytPlayer').replaceWith(playerEl);
+  const el = document.createElement('div');
+  el.id = 'ytPlayer';
+  document.getElementById('ytPlayer').replaceWith(el);
 
   player = new YT.Player('ytPlayer', {
     videoId: videoId,
-    playerVars: { rel:0, modestbranding:1, playsinline:1, start:Math.floor(startSec||0), origin:location.origin },
-    events: {
-      onReady: (e) => {
-        document.getElementById('playerSkeleton').classList.add('hidden');
+    playerVars:{ rel:0, modestbranding:1, playsinline:1, start:Math.floor(startSec||0), origin:location.origin },
+    events:{
+      onReady(e){
+        document.getElementById('playerLoading').style.display = 'none';
         e.target.playVideo();
-        startTracking();
+        startTick();
       },
-      onStateChange: onPlayerStateChange,
-      onError: (e) => {
-        console.warn('YT error', e.data);
-        document.getElementById('playerSkeleton').classList.add('hidden');
-        document.getElementById('ytFallback').classList.remove('hidden');
-        document.getElementById('ytFallback').href = 'https://www.youtube.com/watch?v=' + videoId;
-        showToast('วิดีโอนี้ไม่อนุญาตให้เล่นในเว็บ กด "เปิดใน YouTube"');
+      onStateChange: onState,
+      onError(e){
+        document.getElementById('playerLoading').style.display = 'none';
+        document.getElementById('fallbackBtn').style.display = 'flex';
+        toast('此视频不允许嵌入，点击“打开 YouTube”观看');
       }
     }
   });
 }
 
-function onPlayerStateChange(e){
+function onState(e){
   if(e.data === 0){
-    const lesson = ALL_LESSONS[currentIndex];
-    markComplete(lesson.id, true);
-    showToast('✓ จบบทแล้ว! กำลังไปบทต่อไป...');
-    stopTracking();
+    const l = ALL_LESSONS[currentIdx];
+    markDone(l.id, true);
+    toast('✓ 完成本课！');
+    stopTick();
     setTimeout(() => {
-      if(currentIndex < ALL_LESSONS.length - 1) loadLesson(currentIndex + 1);
-      else showToast('🎉 จบหลักสูตร 100 ชั่วโมงแล้ว! เยี่ยมมาก');
-    }, 1200);
+      if(currentIdx < ALL_LESSONS.length - 1) loadLesson(currentIdx + 1);
+      else toast('🎉 已完成全部课程！');
+    }, 1000);
   }
-  if(e.data === 1){ startTracking(); updateStreak(); refreshStreakUI(); }
-  if(e.data === 2){ stopTracking(); saveCurrentTime(); }
+  if(e.data === 1) startTick();
+  if(e.data === 2){ stopTick(); saveTime(); }
 }
 
 /* ============================================================
    TRACKING
    ============================================================ */
-function startTracking(){
-  stopTracking();
-  tickInterval = setInterval(saveCurrentTime, 5000);
-}
-function stopTracking(){ if(tickInterval){ clearInterval(tickInterval); tickInterval = null; } }
+function startTick(){ stopTick(); tick = setInterval(saveTime, 5000); }
+function stopTick(){ if(tick){ clearInterval(tick); tick = null; } }
 
-function saveCurrentTime(){
+function saveTime(){
   if(!player || !player.getCurrentTime) return;
   try{
-    const t = player.getCurrentTime();
-    const d = player.getDuration();
+    const t = player.getCurrentTime(), d = player.getDuration();
     if(!d || d <= 0) return;
-    const lesson = ALL_LESSONS[currentIndex];
-    if(!progress.lessons[lesson.id]) progress.lessons[lesson.id] = {};
-    const L = progress.lessons[lesson.id];
-    const prev = L.watchedSec || 0;
-    if(t > prev) progress.totalWatchSec = (progress.totalWatchSec || 0) + (t - prev);
-    L.watchedSec = t;
-    L.duration = d;
-    L.pct = Math.min(100, Math.round((t / d) * 100));
-    L.lastSeen = Date.now();
-    if(L.pct >= 80 && !L.completed) {
-      L.completed = true;
-      showToast('✓ บทนี้เรียนจบแล้ว!');
-    }
-    progress.lastPlayed = { lessonId: lesson.id, t: t };
-    saveProgress(progress);
-    updateSidebarUI();
-    updateCourseProgressUI();
-    updateMiniStats();
-    updateModuleTabs();
+    const l = ALL_LESSONS[currentIdx];
+    if(!data.lessons[l.id]) data.lessons[l.id] = {};
+    const L = data.lessons[l.id];
+    const prev = L.watched || 0;
+    if(t > prev) data.totalSec = (data.totalSec || 0) + (t - prev);
+    L.watched = t; L.duration = d;
+    L.pct = Math.min(100, Math.round((t/d)*100));
+    if(L.pct >= 80 && !L.done){ L.done = true; toast('✓ 本课已计入完成'); }
+    data.lastPlayed = { id: l.id, t };
+    saveData();
+    renderSidebar();
+    renderProgress();
+    renderStats();
   }catch(e){}
 }
 
@@ -418,177 +321,126 @@ function saveCurrentTime(){
    ============================================================ */
 function loadLesson(idx){
   if(idx < 0 || idx >= ALL_LESSONS.length) return;
-  currentIndex = idx;
-  const lesson = ALL_LESSONS[idx];
-  const mod = COURSE.modules[lesson.moduleIndex];
+  currentIdx = idx;
+  const l = ALL_LESSONS[idx];
+  const mod = COURSE.modules[l.modIdx];
 
-  document.getElementById('crumb').textContent = `${mod.title} • ${mod.level}`;
-  document.getElementById('lessonTitle').textContent = lesson.title;
-  document.getElementById('lessonMeta').innerHTML = `
-    <span><svg class="icon" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>${lesson.channel}</span>
-    <span><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${lesson.duration}</span>
-    <span>🎯 บทที่ ${idx+1} / ${ALL_LESSONS.length}</span>
-  `;
-  document.getElementById('lessonDesc').textContent = lesson.desc;
+  document.getElementById('crumb').textContent = `${mod.name} • ${mod.source}`;
+  document.getElementById('lessonTitle').textContent = l.name;
+  document.getElementById('lessonSrc').innerHTML = `<svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg> ${l.src} • ${l.dur}`;
+  document.getElementById('lessonDesc').textContent = l.desc;
 
-  const L = progress.lessons[lesson.id] || {};
-  const startSec = (L.watchedSec && L.pct < 95) ? L.watchedSec : 0;
+  const L = data.lessons[l.id] || {};
+  const start = (L.watched && L.pct < 95) ? L.watched : 0;
 
-  loadYTApi(() => createPlayer(lesson.youtubeId, startSec));
-  updateSidebarUI();
-  updateCourseProgressUI();
-  updateMiniStats();
-  updateModuleTabs();
+  if(l.ytId){
+    loadYT(() => createPlayer(l.ytId, start));
+  } else {
+    document.getElementById('playerLoading').textContent = '此课程为播放列表，点击打开 YouTube 播放';
+    document.getElementById('fallbackBtn').style.display = 'flex';
+    document.getElementById('fallbackBtn').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(l.name);
+  }
+
+  renderSidebar();
+  renderProgress();
+  renderStats();
 }
 
 /* ============================================================
-   MODULE TABS
+   RENDER SIDEBAR
    ============================================================ */
-function updateModuleTabs(){
-  const tabs = document.getElementById('moduleTabs');
-  const allDone = ALL_LESSONS.filter(l => (progress.lessons[l.id]||{}).completed).length;
-  const allTotal = ALL_LESSONS.length;
-  const allPct = allTotal ? Math.round((allDone/allTotal)*100) : 0;
-
-  let html = `<button class="mtab ${activeModuleFilter==='all'?'active':''}" onclick="setModuleFilter('all')">ทั้งหมด ${allPct}%</button>`;
-  
-  COURSE.modules.forEach((mod, mi) => {
-    const modLessons = ALL_LESSONS.filter(l => l.moduleIndex === mi);
-    const done = modLessons.filter(l => (progress.lessons[l.id]||{}).completed).length;
-    const pct = modLessons.length ? Math.round((done/modLessons.length)*100) : 0;
-    html += `<button class="mtab ${activeModuleFilter===mod.id?'active':''}" onclick="setModuleFilter('${mod.id}')">${mod.title.split(' ')[0]} ${pct}%</button>`;
-  });
-  
-  tabs.innerHTML = html;
-}
-
-function setModuleFilter(modId){
-  activeModuleFilter = modId;
-  updateSidebarUI();
-  updateModuleTabs();
-}
-
-/* ============================================================
-   SIDEBAR
-   ============================================================ */
-function updateSidebarUI(){
+function renderSidebar(){
   const box = document.getElementById('playlist');
   let html = '';
-  
   COURSE.modules.forEach((mod, mi) => {
-    if(activeModuleFilter !== 'all' && activeModuleFilter !== mod.id) return;
-    
-    const modLessons = ALL_LESSONS.filter(l => l.moduleIndex === mi);
-    const done = modLessons.filter(l => (progress.lessons[l.id]||{}).completed).length;
-    const pct = modLessons.length ? Math.round((done/modLessons.length)*100) : 0;
-    
-    html += `<div class="module-section">
-      <div class="module-header">
-        <div>
-          <div class="mod-title">${mod.title} <span style="color:var(--muted);font-weight:500">(${mod.level})</span></div>
-          <div class="mod-hours">${mod.hours} ชั่วโมง • ${modLessons.length} บท</div>
-        </div>
-        <div class="mod-pct">${pct}%</div>
-      </div>`;
-    
-    mod.items.forEach((it) => {
-      const L = progress.lessons[it.id] || {};
-      const pctVal = L.pct || 0;
-      const isDone = L.completed;
-      const isResume = L.watchedSec && pctVal < 95 && !isDone;
-      const isActive = ALL_LESSONS[currentIndex] && ALL_LESSONS[currentIndex].id === it.id;
-      
+    const modLessons = ALL_LESSONS.filter(l => l.modIdx === mi);
+    const done = modLessons.filter(l => (data.lessons[l.id]||{}).done).length;
+    html += `<div class="module"><div class="module-title">${mod.name}<span>${done}/${modLessons.length}</span></div>`;
+    modLessons.forEach(l => {
+      const L = data.lessons[l.id] || {};
+      const pct = L.pct || 0;
+      const isDone = L.done;
+      const isActive = ALL_LESSONS[currentIdx] && ALL_LESSONS[currentIdx].id === l.id;
+      const thumb = l.ytId ? `https://img.youtube.com/vi/${l.ytId}/mqdefault.jpg` : '';
       html += `
-        <div class="vitem ${isActive?'active':''}" onclick="loadLesson(${it.flatIndex})">
-          <div class="thumb">
-            <img src="https://img.youtube.com/vi/${it.youtubeId}/mqdefault.jpg" loading="lazy" alt="${it.title}" onerror="this.style.opacity=0"/>
-            ${isDone ? `<div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>`:''}
-            ${pctVal>0 && !isDone ? `<div class="vt-mini"><div style="width:${pctVal}%"></div></div>`:''}
+        <div class="lesson ${isActive?'active':''}" onclick="loadLesson(${l.flatIdx})">
+          <div class="lesson-thumb">
+            ${thumb ? `<img src="${thumb}" loading="lazy" onerror="this.style.display='none'">` : `<div style="display:grid;place-items:center;height:100%;color:#6B7280;font-size:20px">📋</div>`}
+            ${isDone ? `<div class="done-tick"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>`:''}
+            ${pct>0 && !isDone ? `<div class="bar"><div style="width:${pct}%"></div></div>`:''}
           </div>
-          <div class="vt">
-            <div class="vt-title">${it.title}</div>
-            <div class="vt-meta">
-              ${isDone ? `<span style="color:var(--emerald);font-weight:700">✓ จบแล้ว</span>`
-                : (isResume ? `<span style="color:var(--sky);font-weight:700">ดูต่อ ${fmtTime(L.watchedSec)}</span><span style="color:var(--amber);font-weight:700">${pctVal}%</span>`
-                : `<span>▶ ยังไม่เริ่ม</span>`)}
+          <div class="lesson-meta">
+            <div class="lesson-name">${l.name}</div>
+            <div class="lesson-sub">
+              ${isDone ? `<span class="done">✓ 已完成</span>`
+                : pct>0 ? `<span class="pct">${pct}% • 继续观看</span>`
+                : `<span>▶ 未开始</span>`}
+              <span>${l.dur}</span>
             </div>
           </div>
         </div>`;
     });
-    
     html += `</div>`;
   });
-  
   box.innerHTML = html;
 }
 
 /* ============================================================
-   PROGRESS UI
+   RENDER PROGRESS & STATS
    ============================================================ */
-function updateCourseProgressUI(){
-  // คำนวณจาก hours จริง
-  let totalCompletedHours = 0;
-  ALL_LESSONS.forEach(l => {
-    if((progress.lessons[l.id]||{}).completed){
-      totalCompletedHours += l.hours || 0.3;
-    }
-  });
-  const pct = TOTAL_HOURS ? Math.round((totalCompletedHours/TOTAL_HOURS)*100) : 0;
-  document.getElementById('courseBar').style.width = pct + '%';
-  document.getElementById('courseBarText').textContent = `${totalCompletedHours.toFixed(1)} / ${TOTAL_HOURS} ชั่วโมง`;
+function renderProgress(){
+  const done = ALL_LESSONS.filter(l => (data.lessons[l.id]||{}).done).length;
+  const total = ALL_LESSONS.length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressNum').innerHTML = `${done} / ${total}<small>课时完成</small>`;
 }
 
-function updateMiniStats(){
-  const done = ALL_LESSONS.filter(l => (progress.lessons[l.id]||{}).completed).length;
-  const pct = ALL_LESSONS.length ? Math.round((done/ALL_LESSONS.length)*100) : 0;
-  document.getElementById('msDone').textContent = done;
-  document.getElementById('msWatch').textContent = Math.round((progress.totalWatchSec||0)/3600 * 10)/10 + 'h';
-  document.getElementById('msPct').textContent = pct + '%';
-}
-
-function refreshStreakUI(){
-  const s = getStreak();
-  document.getElementById('streakText').textContent = s.count + ' วันติด';
+function renderStats(){
+  const done = ALL_LESSONS.filter(l => (data.lessons[l.id]||{}).done).length;
+  const total = ALL_LESSONS.length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('statDone').textContent = done;
+  document.getElementById('statWatch').textContent = Math.round((data.totalSec||0)/60) + 'm';
+  document.getElementById('statPct').textContent = pct + '%';
 }
 
 /* ============================================================
    UTILS
    ============================================================ */
-function fmtTime(sec){
-  if(!sec || sec<0) return '0:00';
-  const m = Math.floor(sec/60), s = Math.floor(sec%60);
-  return m + ':' + String(s).padStart(2,'0');
+function markDone(id, silent){
+  if(!data.lessons[id]) data.lessons[id] = {};
+  data.lessons[id].done = true;
+  data.lessons[id].pct = 100;
+  saveData();
+  renderSidebar();
+  renderProgress();
+  renderStats();
+  if(!silent) toast('✓ 标记为已完成');
 }
 
-function markComplete(lessonId, silent){
-  if(!progress.lessons[lessonId]) progress.lessons[lessonId] = {};
-  progress.lessons[lessonId].completed = true;
-  progress.lessons[lessonId].pct = 100;
-  saveProgress(progress);
-  updateSidebarUI();
-  updateCourseProgressUI();
-  updateMiniStats();
-  updateModuleTabs();
-  if(!silent) showToast('✓ ทำเครื่องหมายว่าเรียนจบแล้ว');
+function fmt(s){
+  if(!s || s<0) return '0:00';
+  return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
 }
 
 /* ============================================================
    RESUME
    ============================================================ */
 function checkResume(){
-  const lp = progress.lastPlayed;
+  const lp = data.lastPlayed;
   if(!lp || !lp.t || lp.t < 10) return;
-  const lesson = ALL_LESSONS.find(l => l.id === lp.lessonId);
-  if(!lesson) return;
-  if(progress.lessons[lp.lessonId] && progress.lessons[lp.lessonId].completed) return;
-  pendingResume = { lessonId: lp.lessonId, t: lp.t };
-  document.getElementById('resumeText').textContent = `${lesson.title} • ดูค้างไว้ที่ ${fmtTime(lp.t)}`;
+  const l = ALL_LESSONS.find(x => x.id === lp.id);
+  if(!l) return;
+  if((data.lessons[lp.id]||{}).done) return;
+  pendingResume = { id: lp.id, t: lp.t };
+  document.getElementById('resumeText').textContent = `${l.name} • 看到 ${fmt(lp.t)}`;
   document.getElementById('resumeBanner').classList.add('show');
 }
 function resumePlay(){
   if(!pendingResume) return;
-  const idx = ALL_LESSONS.findIndex(l => l.id === pendingResume.lessonId);
-  if(idx >= 0) loadLesson(idx);
+  const i = ALL_LESSONS.findIndex(l => l.id === pendingResume.id);
+  if(i >= 0) loadLesson(i);
   dismissResume();
 }
 function dismissResume(){
@@ -599,46 +451,39 @@ function dismissResume(){
 /* ============================================================
    RESET
    ============================================================ */
-function resetProgress(){
-  if(!confirm('ล้างความคืบหน้าทั้งหมด?')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  localStorage.removeItem(STREAK_KEY);
-  progress = loadProgress();
+function resetAll(){
+  if(!confirm('清除全部学习进度？')) return;
+  localStorage.removeItem(KEY);
+  data = loadData();
   loadLesson(0);
-  showToast('ล้างข้อมูลแล้ว');
+  toast('已清除');
 }
 
 /* ============================================================
    TOAST
    ============================================================ */
 let toastTimer;
-function showToast(msg){
-  const t = document.getElementById('toast');
+function toast(msg){
+  const el = document.getElementById('toast');
   document.getElementById('toastMsg').textContent = msg;
-  t.classList.add('show');
+  el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
 }
 
 /* ============================================================
    INIT
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  const lp = progress.lastPlayed;
-  let startIdx = 0;
+  const lp = data.lastPlayed;
+  let start = 0;
   if(lp){
-    const i = ALL_LESSONS.findIndex(l => l.id === lp.lessonId);
-    if(i >= 0 && !(progress.lessons[lp.lessonId]||{}).completed) startIdx = i;
+    const i = ALL_LESSONS.findIndex(l => l.id === lp.id);
+    if(i >= 0 && !(data.lessons[lp.id]||{}).done) start = i;
   }
-  loadLesson(startIdx);
-  updateSidebarUI();
-  updateMiniStats();
-  updateCourseProgressUI();
-  updateModuleTabs();
-  updateStreak();
-  refreshStreakUI();
-  setTimeout(checkResume, 2000);
-  window.addEventListener('beforeunload', () => { saveCurrentTime(); saveProgress(progress); });
+  loadLesson(start);
+  setTimeout(checkResume, 1500);
+  window.addEventListener('beforeunload', () => { saveTime(); saveData(); });
 });
 </script>
 </body>
