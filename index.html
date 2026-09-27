@@ -1,502 +1,1654 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Baan English — Real YouTube Course Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>บ้านภาษาอังกฤษ Landa — เรียนออนไลน์ฟรี 100+ ชั่วโมง</title>
+<meta name="description" content="คอร์สเรียนภาษาอังกฤษออนไลน์ฟรี 100 ชั่วโมง จาก YouTube Playlist พร้อมระบบติดตามการเรียน การบ้าน และใบเซอร์" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📘</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://i.ytimg.com" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
 <style>
-:root{
-  --bg:#0F172A; --ink:#0F172A; --muted:#64748B;
-  --line:#E2E8F0; --amber:#F59E0B; --emerald:#10B981;
-  --sky:#0EA5E9; --rose:#F43F5E;
-  --shadow:0 10px 30px -12px rgba(15,23,42,.25);
-  --shadow-lg:0 25px 50px -12px rgba(15,23,42,.35);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#F8FAFC;color:var(--ink);font-family:'Inter','Noto Sans Thai',system-ui,sans-serif;line-height:1.6}
-button{font-family:inherit;cursor:pointer;border:none;background:none}
+/* ═══════════════════════════════════════════════════
+   RESET & TOKENS
+   ═══════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+img,svg{display:block;max-width:100%}
+button,a,input,textarea,select{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
 a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
-.icon{width:18px;height:18px;stroke-width:2;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.container{max-width:1200px;margin:0 auto;padding:0 20px}
-.hidden{display:none!important}
 
-/* NAV */
-.nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
-.nav .container{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px}
-.brand-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--amber),#EA580C);border-radius:10px;display:grid;place-items:center}
-.brand-mark svg{width:20px;height:20px;stroke:#fff}
-.nav-back{display:flex;align-items:center;gap:6px;color:#475569;font-weight:600;font-size:14px;padding:8px 14px;border-radius:9px;transition:.2s}
-.nav-back:hover{background:#F1F5F9}
-.user-chip{display:flex;align-items:center;gap:10px;padding:5px 12px 5px 5px;background:#F1F5F9;border-radius:99px;font-size:13.5px;font-weight:600}
-.user-chip .av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#8B5CF6,var(--sky));display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+:root{
+  --c-bg:#0b0f19;
+  --c-bg-2:#111726;
+  --c-surface:#161c2c;
+  --c-surface-2:#1d2438;
+  --c-line:#252c44;
+  --c-line-2:#323a58;
+  --c-text:#e7ecf5;
+  --c-muted:#8b93a8;
+  --c-primary:#4f8cff;
+  --c-primary-2:#7aa9ff;
+  --c-accent:#ffb454;
+  --c-success:#22c55e;
+  --c-danger:#ef4444;
+  --c-warn:#f59e0b;
+  --radius:14px;
+  --radius-sm:8px;
+  --radius-lg:20px;
+  --shadow:0 10px 40px rgba(0,0,0,.35);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.5);
+  --font:'Inter','IBM Plex Sans Thai',system-ui,-apple-system,sans-serif;
+  --transition:.2s cubic-bezier(.4,0,.2,1);
+}
 
-/* LAYOUT */
-.app{display:grid;grid-template-columns:1fr 400px;min-height:calc(100vh - 64px)}
-@media(max-width:1024px){.app{grid-template-columns:1fr}}
+body{
+  font-family:var(--font);
+  background:var(--c-bg);
+  color:var(--c-text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
 
-/* STAGE */
-.stage{background:#0B1220;padding:24px;display:flex;flex-direction:column;gap:20px}
-.player-wrap{position:relative;background:#000;border-radius:16px;overflow:hidden;aspect-ratio:16/9;box-shadow:var(--shadow-lg)}
-.player-wrap iframe{width:100%;height:100%;border:0}
-.player-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#94A3B8;gap:12px;background:linear-gradient(135deg,#1E293B,#0F172A)}
-.player-placeholder svg{width:48px;height:48px;stroke:var(--amber);fill:none}
-.open-yt-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:var(--rose);color:#fff;font-size:13px;font-weight:700;transition:.2s}
-.open-yt-btn:hover{background:#BE123C;transform:translateY(-1px)}
+.container{width:min(1240px,92vw);margin-inline:auto}
+.container.narrow{width:min(760px,92vw)}
+.muted{color:var(--c-muted)}
+.hidden{display:none !important}
 
-/* INFO CARD */
-.info-card{background:#fff;border-radius:16px;padding:22px;box-shadow:var(--shadow)}
-.info-card .crumb{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.info-card h1{font-size:20px;font-weight:800;line-height:1.35;margin-bottom:8px}
-.info-card .src{font-size:13px;color:var(--sky);font-weight:600;display:flex;align-items:center;gap:6px;margin-bottom:10px}
-.info-card .desc{font-size:14px;color:#4B5563;padding-top:14px;border-top:1px solid var(--line)}
+/* ═══════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════ */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--c-bg-2)}
+::-webkit-scrollbar-thumb{background:var(--c-line-2);border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:var(--c-muted)}
 
-/* PROGRESS */
-.progress-card{background:#fff;border-radius:16px;padding:18px 22px;box-shadow:var(--shadow);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.progress-track{flex:1;min-width:180px;height:10px;background:#F1F5F9;border-radius:99px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--amber),#F97316);border-radius:99px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
-.progress-num{font-size:16px;font-weight:800;white-space:nowrap}
-.progress-num small{display:block;font-size:11px;color:var(--muted);font-weight:500}
+/* ═══════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.65rem 1.1rem;border-radius:10px;
+  font-weight:600;font-size:.95rem;
+  transition:transform var(--transition),background var(--transition),border-color var(--transition),box-shadow var(--transition);
+  white-space:nowrap;
+}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--c-primary);color:#fff}
+.btn-primary:hover{background:var(--c-primary-2);box-shadow:0 6px 20px rgba(79,140,255,.35)}
+.btn-ghost{background:transparent;border:1px solid var(--c-line);color:var(--c-text)}
+.btn-ghost:hover{background:var(--c-surface);border-color:var(--c-line-2)}
+.btn-success{background:var(--c-success);color:#fff}
+.btn-success:hover{background:#16a34a}
+.btn-danger{background:var(--c-danger);color:#fff}
+.btn-lg{padding:.9rem 1.5rem;font-size:1.02rem;border-radius:12px}
+.btn-block{width:100%}
+.btn svg{width:18px;height:18px;flex-shrink:0}
 
-/* SIDEBAR */
-.sidebar{background:#fff;border-left:1px solid var(--line);display:flex;flex-direction:column;max-height:calc(100vh - 64px)}
-@media(max-width:1024px){.sidebar{border-left:none;border-top:1px solid var(--line);max-height:none}}
-.sidebar-head{padding:18px 20px;border-bottom:1px solid var(--line)}
-.sidebar-head h2{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
-.sidebar-head h2 svg{color:var(--amber)}
-.stage-tabs{display:flex;gap:6px;margin-top:12px;overflow-x:auto;padding-bottom:4px}
-.stage-tabs::-webkit-scrollbar{height:3px}
-.stage-tabs::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:99px}
-.stab{padding:5px 12px;border-radius:8px;font-size:11.5px;font-weight:600;white-space:nowrap;background:#F1F5F9;color:#475569;transition:.2s}
-.stab.active{background:var(--amber);color:#fff}
-.sidebar-body{flex:1;overflow-y:auto;padding:8px}
-.sidebar-body::-webkit-scrollbar{width:5px}
-.sidebar-body::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:99px}
+.icon-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:40px;height:40px;border-radius:10px;
+  color:var(--c-muted);transition:background var(--transition),color var(--transition);
+}
+.icon-btn:hover{background:var(--c-surface);color:var(--c-text)}
+.icon-btn svg{width:20px;height:20px}
 
-/* STAGE SECTION */
-.stage-section{margin-bottom:4px}
-.stage-label{padding:12px 16px 6px;font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:#F9FAFB;margin:6px;border-radius:8px;display:flex;justify-content:space-between}
-.stage-label span{color:var(--amber)}
+/* ═══════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════ */
+.site-header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(11,15,25,.78);
+  backdrop-filter:saturate(140%) blur(14px);
+  -webkit-backdrop-filter:saturate(140%) blur(14px);
+  border-bottom:1px solid var(--c-line);
+  transition:box-shadow var(--transition);
+}
+.site-header.scrolled{box-shadow:0 4px 20px rgba(0,0,0,.35)}
+.header-inner{display:flex;align-items:center;gap:2rem;height:68px}
+.brand{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
+.brand-icon{width:28px;height:28px;color:var(--c-primary);flex-shrink:0}
+.brand-text{display:flex;flex-direction:column;line-height:1.1}
+.brand-text strong{font-size:.95rem;font-weight:700}
+.brand-text em{font-style:normal;font-size:.68rem;color:var(--c-muted);letter-spacing:.18em;text-transform:uppercase}
 
-/* COURSE ITEM */
-.course-item{display:flex;gap:12px;padding:12px 14px;border-radius:11px;cursor:pointer;transition:.15s;margin:2px 6px;align-items:flex-start}
-.course-item:hover{background:#F8FAFC}
-.course-item.active{background:#FEF3C7}
-.course-item .thumb{width:90px;height:54px;border-radius:8px;background:#0F172A;flex-shrink:0;overflow:hidden;position:relative;display:grid;place-items:center}
-.course-item .thumb .placeholder{color:#6B7280;font-size:22px}
-.course-item .thumb .done-tick{position:absolute;inset:0;background:rgba(16,185,129,.85);display:grid;place-items:center}
-.course-item .thumb .done-tick svg{width:22px;height:22px;stroke:#fff;stroke-width:3}
-.course-item .info{flex:1;min-width:0}
-.course-item .info .name{font-size:13px;font-weight:600;line-height:1.35;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.course-item .info .meta{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.course-item .info .meta .pct{color:var(--amber);font-weight:700}
-.course-item .info .meta .done{color:var(--emerald);font-weight:700}
-.course-item .info .meta .yt-link{color:var(--rose);font-weight:600;display:flex;align-items:center;gap:3px}
-.course-item .info .meta .yt-link svg{width:11px;height:11px}
+.main-nav{display:flex;gap:1.5rem;margin-left:auto}
+.main-nav a{font-size:.9rem;color:var(--c-muted);transition:color var(--transition)}
+.main-nav a:hover{color:var(--c-text)}
+.header-actions{display:flex;align-items:center;gap:.5rem}
 
-/* STATS */
-.sidebar-foot{padding:16px 20px;border-top:1px solid var(--line);background:#F8FAFC}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px;text-align:center}
-.stat b{font-size:17px;font-weight:800;display:block;letter-spacing:-.02em}
-.stat small{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase}
-.reset-btn{width:100%;padding:8px;border-radius:9px;font-size:12px;font-weight:600;color:var(--rose);background:#FEF2F2;border:1px solid #FECACA;transition:.2s}
-.reset-btn:hover{background:#FEE2E2}
+.menu-toggle{display:none}
+@media(max-width:900px){
+  .main-nav{display:none}
+  .menu-toggle{display:inline-flex}
+}
 
-/* RESUME */
-.resume{position:fixed;bottom:22px;left:22px;right:22px;max-width:520px;margin:0 auto;background:#0F172A;color:#fff;border-radius:14px;padding:15px 20px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-lg);z-index:200;transform:translateY(140%);transition:.4s cubic-bezier(.2,.8,.2,1)}
-.resume.show{transform:translateY(0)}
-.resume .ic{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--amber),#EA580C);display:grid;place-items:center;flex-shrink:0}
-.resume .ic svg{stroke:#fff;width:20px;height:20px}
-.resume .txt{flex:1;min-width:0}
-.resume .txt b{display:block;font-size:13.5px;font-weight:700}
-.resume .txt small{font-size:12px;color:#94A3B8}
-.resume button{padding:8px 15px;border-radius:8px;font-size:12.5px;font-weight:700}
-.resume .go{background:var(--amber);color:#fff}
-.resume .no{background:rgba(255,255,255,.1);color:#fff}
+/* ═══════════════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════════════ */
+.hero{
+  padding:5rem 0 4rem;
+  background:
+    radial-gradient(1000px 400px at 20% 0%, rgba(79,140,255,.18), transparent 60%),
+    radial-gradient(800px 400px at 90% 100%, rgba(255,180,84,.08), transparent 60%);
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(79,140,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,140,255,.04) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, black 20%, transparent 70%);
+  pointer-events:none;
+}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:3rem;align-items:center;position:relative}
+@media(max-width:960px){.hero-grid{grid-template-columns:1fr;gap:2rem}}
 
-/* TOAST */
-.toast{position:fixed;bottom:22px;right:22px;background:#0F172A;color:#fff;padding:12px 18px;border-radius:11px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;z-index:300;transform:translateY(140%);transition:.4s;max-width:320px}
-.toast.show{transform:translateY(0)}
-.toast svg{color:var(--emerald);width:16px;height:16px;flex-shrink:0}
+.badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.4rem .85rem;border-radius:999px;
+  background:rgba(79,140,255,.12);color:var(--c-primary-2);
+  font-size:.8rem;font-weight:600;margin-bottom:1.2rem;
+  border:1px solid rgba(79,140,255,.25);
+}
+.hero h1{font-size:clamp(1.9rem,4.5vw,3.4rem);line-height:1.15;letter-spacing:-.02em;font-weight:800}
+.hero h1 em{font-style:normal;color:var(--c-primary-2);position:relative}
+.hero h1 em::after{
+  content:"";position:absolute;left:0;right:0;bottom:.05em;
+  height:.15em;background:rgba(79,140,255,.3);z-index:-1;border-radius:2px;
+}
+.lead{margin-top:1.2rem;color:var(--c-muted);max-width:56ch;font-size:1.02rem}
+.hero-cta{display:flex;gap:.8rem;margin-top:1.8rem;flex-wrap:wrap}
+
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1rem;margin-top:2.5rem;padding-top:1.8rem;
+  border-top:1px solid var(--c-line);
+}
+.hero-stats dt{font-size:1.5rem;font-weight:800;color:var(--c-text);line-height:1}
+.hero-stats dd{font-size:.78rem;color:var(--c-muted);margin-top:.3rem}
+
+.hero-visual{
+  position:relative;border-radius:var(--radius-lg);overflow:hidden;
+  box-shadow:var(--shadow-lg);aspect-ratio:16/10;
+  border:1px solid var(--c-line);
+}
+.hero-visual img{width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(11,15,25,.7))}
+.hero-play{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:78px;height:78px;border-radius:50%;
+  background:rgba(255,255,255,.95);color:#0b0f19;
+  display:grid;place-items:center;
+  box-shadow:0 10px 40px rgba(0,0,0,.5);
+  animation:pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 10px 40px rgba(0,0,0,.5), 0 0 0 0 rgba(255,255,255,.4)}
+  50%{box-shadow:0 10px 40px rgba(0,0,0,.5), 0 0 0 20px rgba(255,255,255,0)}
+}
+
+/* ═══════════════════════════════════════════════════
+   SECTIONS
+   ═══════════════════════════════════════════════════ */
+.section{padding:4.5rem 0}
+.section-alt{background:var(--c-bg-2)}
+.section-title{font-size:1.85rem;font-weight:800;margin-bottom:2rem;letter-spacing:-.02em}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+.section-head h2{font-size:1.85rem;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.section-head p{color:var(--c-muted);font-size:.9rem;margin-top:.4rem}
+
+/* ═══════════════════════════════════════════════════
+   FILTERS
+   ═══════════════════════════════════════════════════ */
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap}
+.chip{
+  padding:.45rem .95rem;border-radius:999px;
+  border:1px solid var(--c-line);background:transparent;
+  color:var(--c-muted);font-size:.85rem;font-weight:600;
+  transition:all var(--transition);
+}
+.chip:hover{color:var(--c-text);border-color:var(--c-line-2)}
+.chip.is-active{background:var(--c-primary);border-color:var(--c-primary);color:#fff}
+
+/* ═══════════════════════════════════════════════════
+   COURSE GRID
+   ═══════════════════════════════════════════════════ */
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.4rem}
+.course-card{
+  background:var(--c-surface);border:1px solid var(--c-line);
+  border-radius:var(--radius);overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition);
+}
+.course-card:hover{transform:translateY(-4px);border-color:var(--c-primary);box-shadow:var(--shadow)}
+
+.course-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:#0b0f19;display:block}
+.course-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.course-card:hover .course-thumb img{transform:scale(1.05)}
+
+.course-level{
+  position:absolute;top:.7rem;left:.7rem;
+  padding:.3rem .7rem;border-radius:6px;
+  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+}
+.level-beginner{background:rgba(34,197,94,.95);color:#052e16}
+.level-intermediate{background:rgba(255,180,84,.95);color:#3b2405}
+.level-advanced{background:rgba(239,68,68,.95);color:#fff}
+
+.course-duration{
+  position:absolute;bottom:.7rem;right:.7rem;
+  padding:.25rem .55rem;border-radius:6px;
+  background:rgba(0,0,0,.78);color:#fff;font-size:.73rem;font-weight:600;
+  display:flex;align-items:center;gap:.3rem;backdrop-filter:blur(6px);
+}
+.course-duration svg{width:12px;height:12px}
+
+.course-body{padding:1.1rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.course-body h3{font-size:1.02rem;font-weight:700;line-height:1.35}
+.course-desc{font-size:.85rem;color:var(--c-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.course-meta{display:flex;gap:1rem;font-size:.78rem;color:var(--c-muted)}
+.course-meta span{display:flex;align-items:center;gap:.35rem}
+.course-meta svg{width:14px;height:14px}
+
+.course-foot{
+  margin-top:auto;padding-top:.9rem;border-top:1px solid var(--c-line);
+  display:flex;justify-content:space-between;align-items:center;gap:.5rem;
+}
+.price{display:flex;flex-direction:column;line-height:1.1}
+.price .now{font-size:1.15rem;font-weight:800}
+.price .old{font-size:.72rem;color:var(--c-muted);text-decoration:line-through}
+.price.free .now{color:var(--c-success)}
+
+/* ═══════════════════════════════════════════════════
+   STEPS
+   ═══════════════════════════════════════════════════ */
+.steps{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.4rem}
+.steps li{
+  background:var(--c-surface);border:1px solid var(--c-line);
+  padding:1.6rem;border-radius:var(--radius);position:relative;
+  transition:transform var(--transition),border-color var(--transition);
+}
+.steps li:hover{transform:translateY(-3px);border-color:var(--c-primary)}
+.step-num{font-size:.72rem;font-weight:800;letter-spacing:.2em;color:var(--c-primary-2);margin-bottom:.7rem}
+.steps h3{font-size:1.02rem;font-weight:700;margin-bottom:.4rem}
+.steps p{font-size:.87rem;color:var(--c-muted)}
+
+/* ═══════════════════════════════════════════════════
+   REVIEWS
+   ═══════════════════════════════════════════════════ */
+.review-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem}
+.review{
+  background:var(--c-surface);border:1px solid var(--c-line);
+  border-radius:var(--radius);padding:1.5rem;
+  display:flex;flex-direction:column;gap:1rem;
+}
+.review-stars{display:flex;gap:.15rem;color:var(--c-accent)}
+.review-stars svg{width:16px;height:16px}
+.review p{font-size:.92rem;line-height:1.6}
+.review footer{display:flex;align-items:center;gap:.7rem;margin-top:auto}
+.review footer img{width:42px;height:42px;border-radius:50%;object-fit:cover}
+.review footer strong{display:block;font-size:.88rem}
+.review footer span{font-size:.76rem;color:var(--c-muted)}
+
+/* ═══════════════════════════════════════════════════
+   FAQ
+   ═══════════════════════════════════════════════════ */
+.faq{
+  background:var(--c-surface);border:1px solid var(--c-line);
+  border-radius:var(--radius-sm);padding:1rem 1.2rem;margin-bottom:.6rem;
+  transition:border-color var(--transition);
+}
+.faq:hover{border-color:var(--c-line-2)}
+.faq summary{
+  cursor:pointer;font-weight:600;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  font-size:.95rem;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"";width:18px;height:18px;flex-shrink:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b93a8' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
+  background-size:contain;transition:transform var(--transition);
+}
+.faq[open] summary::after{transform:rotate(45deg)}
+.faq p{margin-top:.7rem;color:var(--c-muted);font-size:.88rem;line-height:1.7}
+.faq code{background:var(--c-bg);padding:.15rem .45rem;border-radius:4px;font-size:.82rem;color:var(--c-primary-2)}
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════ */
+.site-footer{background:var(--c-bg-2);border-top:1px solid var(--c-line);padding:3rem 0 1.5rem;margin-top:4rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem}
+@media(max-width:760px){.footer-grid{grid-template-columns:1fr 1fr}}
+.footer-grid h4{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.9rem}
+.footer-grid a{display:block;color:var(--c-muted);font-size:.86rem;padding:.22rem 0;transition:color var(--transition)}
+.footer-grid a:hover{color:var(--c-text)}
+.socials{display:flex;gap:.5rem}
+.socials a{width:36px;height:36px;display:grid;place-items:center;border-radius:8px;background:var(--c-surface);transition:background var(--transition)}
+.socials a:hover{background:var(--c-primary)}
+.socials svg{width:18px;height:18px}
+.footer-bottom{margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--c-line);font-size:.8rem;color:var(--c-muted);text-align:center}
+
+/* ═══════════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════════ */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(6px);z-index:200;
+  display:none;align-items:center;justify-content:center;
+  padding:1rem;
+}
+.modal-backdrop.open{display:flex;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{
+  background:var(--c-surface);border:1px solid var(--c-line);
+  border-radius:var(--radius-lg);max-width:520px;width:100%;
+  max-height:90vh;overflow-y:auto;
+  animation:slideUp .25s cubic-bezier(.4,0,.2,1);
+}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-head{
+  padding:1.2rem 1.4rem;border-bottom:1px solid var(--c-line);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.modal-head h3{font-size:1.1rem;font-weight:700}
+.modal-body{padding:1.4rem}
+.modal-foot{padding:1rem 1.4rem;border-top:1px solid var(--c-line);display:flex;gap:.6rem;justify-content:flex-end}
+
+/* ═══════════════════════════════════════════════════
+   VIEWS (SPA)
+   ═══════════════════════════════════════════════════ */
+.view{display:none}
+.view.active{display:block}
+
+/* ═══════════════════════════════════════════════════
+   LEARN VIEW
+   ═══════════════════════════════════════════════════ */
+.learn-grid{display:grid;grid-template-columns:1fr 380px;gap:1.5rem;align-items:start;padding:2rem 0}
+@media(max-width:1000px){.learn-grid{grid-template-columns:1fr}}
+
+.player-wrap{background:#000;border-radius:var(--radius);overflow:hidden;aspect-ratio:16/9;position:relative}
+.player-wrap iframe,.player-wrap #ytPlayer{width:100%;height:100%;border:0;position:absolute;inset:0}
+
+.lesson-info{padding:1.3rem 0 0}
+.lesson-info h1{font-size:1.4rem;font-weight:800;line-height:1.3}
+.lesson-info .meta{color:var(--c-muted);font-size:.86rem;margin-top:.6rem;display:flex;gap:1rem;flex-wrap:wrap}
+.lesson-info .meta span{display:flex;align-items:center;gap:.4rem}
+.lesson-info .meta svg{width:15px;height:15px}
+
+.progress-bar{height:6px;background:var(--c-surface);border-radius:999px;overflow:hidden;margin-top:1.2rem}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--c-primary),var(--c-primary-2));width:0%;transition:width .4s ease;border-radius:999px}
+.progress-meta{display:flex;justify-content:space-between;font-size:.82rem;color:var(--c-muted);margin-top:.5rem}
+
+.sidebar{
+  background:var(--c-surface);border:1px solid var(--c-line);
+  border-radius:var(--radius);overflow:hidden;
+  position:sticky;top:84px;
+  max-height:calc(100vh - 100px);
+  display:flex;flex-direction:column;
+}
+@media(max-width:1000px){.sidebar{position:static;max-height:none}}
+.sidebar-head{padding:1rem 1.2rem;border-bottom:1px solid var(--c-line);flex-shrink:0}
+.sidebar-head h3{font-size:.95rem;font-weight:700}
+.sidebar-head p{font-size:.78rem;color:var(--c-muted);margin-top:.3rem}
+
+.playlist{list-style:none;overflow-y:auto;flex:1}
+.playlist li{border-bottom:1px solid var(--c-line)}
+.playlist button{
+  width:100%;text-align:left;padding:.85rem 1rem;
+  display:grid;grid-template-columns:32px 1fr auto;gap:.7rem;align-items:center;
+  transition:background var(--transition);
+}
+.playlist button:hover{background:var(--c-surface-2)}
+.playlist li.is-active button{background:rgba(79,140,255,.1);border-left:3px solid var(--c-primary)}
+.lesson-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--c-bg-2);display:grid;place-items:center;
+  font-size:.72rem;font-weight:700;color:var(--c-muted);
+  flex-shrink:0;
+}
+.playlist li.is-active .lesson-num{background:var(--c-primary);color:#fff}
+.playlist li.is-done .lesson-num{background:var(--c-success);color:#fff}
+.lesson-title{font-size:.85rem;font-weight:500;line-height:1.3;text-align:left}
+.lesson-dur{font-size:.72rem;color:var(--c-muted);flex-shrink:0}
+
+.homework-box{
+  margin-top:1.5rem;padding:1.4rem;
+  background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--radius);
+}
+.homework-box h3{font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.homework-box p{font-size:.85rem;color:var(--c-muted);margin-bottom:1rem}
+.field{width:100%;padding:.7rem .9rem;border-radius:8px;background:var(--c-bg);border:1px solid var(--c-line);color:var(--c-text);font-family:inherit;font-size:.9rem;margin-bottom:.7rem;transition:border-color var(--transition)}
+.field:focus{outline:none;border-color:var(--c-primary)}
+textarea.field{min-height:90px;resize:vertical}
+
+/* ═══════════════════════════════════════════════════
+   DASHBOARD
+   ═══════════════════════════════════════════════════ */
+.dash-hero{padding:2.5rem 0;border-bottom:1px solid var(--c-line);margin-bottom:2.5rem}
+.dash-hero h1{font-size:2rem;font-weight:800;letter-spacing:-.02em}
+.dash-hero p{color:var(--c-muted);margin-top:.5rem}
+.dash-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-top:1.5rem}
+.stat-card{
+  background:var(--c-surface);border:1px solid var(--c-line);
+  border-radius:var(--radius);padding:1.2rem;
+  transition:transform var(--transition),border-color var(--transition);
+}
+.stat-card:hover{transform:translateY(-2px);border-color:var(--c-primary)}
+.stat-card .num{font-size:1.9rem;font-weight:800;color:var(--c-primary-2);line-height:1}
+.stat-card .label{font-size:.82rem;color:var(--c-muted);margin-top:.5rem}
+.stat-card svg{width:20px;height:20px;color:var(--c-primary);margin-bottom:.7rem}
+
+.dash-section{margin-bottom:3rem}
+.dash-section h2{font-size:1.3rem;font-weight:700;margin-bottom:1.2rem}
+.my-course{
+  display:grid;grid-template-columns:200px 1fr auto;gap:1.2rem;
+  background:var(--c-surface);border:1px solid var(--c-line);
+  border-radius:var(--radius);padding:1rem;margin-bottom:1rem;align-items:center;
+  transition:border-color var(--transition);
+}
+.my-course:hover{border-color:var(--c-line-2)}
+@media(max-width:640px){.my-course{grid-template-columns:1fr}}
+.my-course img{width:100%;border-radius:8px;aspect-ratio:16/9;object-fit:cover}
+.my-course h3{font-size:1rem;font-weight:700;line-height:1.3}
+.my-course .progress-bar{margin-top:.7rem}
+.my-course .pct{font-size:.8rem;color:var(--c-muted);margin-top:.4rem}
+
+/* ═══════════════════════════════════════════════════
+   CHECKOUT
+   ═══════════════════════════════════════════════════ */
+.checkout-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:2rem;padding:2rem 0}
+@media(max-width:900px){.checkout-grid{grid-template-columns:1fr}}
+.checkout-panel{background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--radius);padding:1.5rem}
+.checkout-panel h3{font-size:1.1rem;font-weight:700;margin-bottom:1rem}
+.summary-item{display:flex;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid var(--c-line);font-size:.9rem}
+.summary-item:last-child{border-bottom:0}
+.summary-total{display:flex;justify-content:space-between;padding-top:1rem;margin-top:.5rem;border-top:2px solid var(--c-line);font-size:1.15rem;font-weight:800}
+.summary-total .price-amount{color:var(--c-primary-2)}
+
+/* ═══════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════ */
+.toast-container{
+  position:fixed;bottom:24px;right:24px;z-index:300;
+  display:flex;flex-direction:column;gap:.6rem;
+}
+@media(max-width:640px){.toast-container{left:16px;right:16px;bottom:16px}}
+.toast{
+  background:var(--c-surface);border:1px solid var(--c-line);
+  border-left:4px solid var(--c-primary);
+  padding:.9rem 1.1rem;border-radius:10px;
+  box-shadow:var(--shadow-lg);min-width:260px;
+  font-size:.9rem;display:flex;align-items:flex-start;gap:.6rem;
+  animation:toastIn .3s cubic-bezier(.4,0,.2,1);
+}
+.toast.success{border-left-color:var(--c-success)}
+.toast.error{border-left-color:var(--c-danger)}
+.toast.warn{border-left-color:var(--c-warn)}
+.toast svg{width:18px;height:18px;flex-shrink:0;margin-top:.15rem}
+@keyframes toastIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ═══════════════════════════════════════════════════
+   REMINDER BANNER
+   ═══════════════════════════════════════════════════ */
+.reminder-banner{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:var(--c-surface);border:1px solid var(--c-primary);
+  padding:.9rem 1.2rem;border-radius:12px;
+  box-shadow:var(--shadow-lg);
+  display:flex;align-items:center;gap:1rem;z-index:100;
+  font-size:.9rem;max-width:90vw;
+  animation:slideUp .3s cubic-bezier(.4,0,.2,1);
+}
+.reminder-banner svg{width:20px;height:20px;color:var(--c-primary);flex-shrink:0}
+.reminder-banner .btn{padding:.4rem .9rem;font-size:.82rem}
+
+/* ═══════════════════════════════════════════════════
+   LOADING SKELETON
+   ═══════════════════════════════════════════════════ */
+.skeleton{
+  background:linear-gradient(90deg,var(--c-surface) 25%,var(--c-surface-2) 50%,var(--c-surface) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
+  border-radius:var(--radius);
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skeleton-card{height:340px}
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="container">
-    <a href="#" class="brand">
-      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
-      Baan English Landa
+<!-- ═══════════════════════════════════════════════════
+     TOAST CONTAINER
+     ═══════════════════════════════════════════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════════════ -->
+<header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a href="#" class="brand" data-nav="home">
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      <span class="brand-text">
+        <strong>บ้านภาษาอังกฤษ</strong>
+        <em>Landa</em>
+      </span>
     </a>
-    <div class="user-chip"><span class="av">ส</span><span>คุณสมชาย</span></div>
-  </div>
-</nav>
 
-<div class="app">
-  <!-- LEFT: PLAYER AREA -->
-  <div class="stage">
-    <div class="player-wrap" id="playerWrap">
-      <div class="player-placeholder" id="playerPlaceholder">
-        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-        <p style="font-size:14px;text-align:center;padding:0 20px" id="placeholderText">เลือกคอร์สจากด้านขวาเพื่อเริ่มเรียน</p>
-        <a href="#" class="open-yt-btn hidden" id="openYtBtn" target="_blank" rel="noopener">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          เปิดใน YouTube
-        </a>
-      </div>
-    </div>
+    <nav class="main-nav">
+      <a href="#courses" data-scroll="courses">คอร์สทั้งหมด</a>
+      <a href="#how" data-scroll="how">วิธีเรียน</a>
+      <a href="#reviews" data-scroll="reviews">รีวิว</a>
+      <a href="#faq" data-scroll="faq">คำถามบ่อย</a>
+    </nav>
 
-    <div class="info-card">
-      <div class="crumb" id="crumb">เลือกคอร์ส</div>
-      <h1 id="courseTitle">Baan English — Real YouTube Course</h1>
-      <div class="src" id="courseSrc"></div>
-      <p class="desc" id="courseDesc">เลือกคอร์สจากแถบด้านขวา ระบบจะเปิด YouTube ไปยังหน้าคอร์สจริง</p>
-    </div>
-
-    <div class="progress-card">
-      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-      <div class="progress-num" id="progressNum">0 / 7<small>คอร์สที่เรียนจบ</small></div>
+    <div class="header-actions">
+      <button class="icon-btn" aria-label="ค้นหา" id="searchBtn" title="ค้นหา">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="ห้องเรียนของฉัน" data-nav="dashboard" title="ห้องเรียนของฉัน">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+      </button>
+      <button class="btn btn-primary" data-nav="courses" id="startBtn">
+        เริ่มเรียน
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
     </div>
   </div>
+</header>
 
-  <!-- RIGHT: SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-head">
-      <h2><svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg> หลักสูตรจริงจาก YouTube</h2>
-      <div class="stage-tabs" id="stageTabs"></div>
-    </div>
-    <div class="sidebar-body" id="playlist"></div>
-    <div class="sidebar-foot">
-      <div class="stats-grid">
-        <div class="stat"><b id="statDone">0</b><small>จบ</small></div>
-        <div class="stat"><b id="statPct">0%</b><small>คืบหน้า</small></div>
-        <div class="stat"><b id="statTotal">7</b><small>คอร์ส</small></div>
+<!-- ═══════════════════════════════════════════════════
+     VIEW: HOME
+     ═══════════════════════════════════════════════════ -->
+<main id="view-home" class="view active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+          Playlist ฟรี 100+ ชั่วโมง
+        </span>
+        <h1>เรียนภาษาอังกฤษ<em>ฟรี</em><br/>จาก YouTube พร้อมระบบ<br/>ติดตามผล<em>จริงจัง</em></h1>
+        <p class="lead">
+          เราคัด Playlist คุณภาพจาก YouTube มาเรียบเรียงเป็นหลักสูตร 100 ชั่วโมง
+          พร้อมระบบติดตามการดู, การบ้าน, และใบเซอร์เมื่อเรียนครบ
+        </p>
+        <div class="hero-cta">
+          <button class="btn btn-primary btn-lg" data-nav="courses">
+            ดูหลักสูตรทั้งหมด
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+          <button class="btn btn-ghost btn-lg" data-scroll="how">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            วิธีเรียน
+          </button>
+        </div>
+
+        <dl class="hero-stats">
+          <div><dt>100+</dt><dd>ชั่วโมงวิดีโอ</dd></div>
+          <div><dt>7</dt><dd>หลักสูตร</dd></div>
+          <div><dt>100%</dt><dd>ฟรี</dd></div>
+          <div><dt>∞</dt><dd>เรียนซ้ำได้</dd></div>
+        </dl>
       </div>
-      <button class="reset-btn" onclick="resetAll()">ล้างข้อมูลทั้งหมด</button>
+
+      <div class="hero-visual">
+        <img src="https://i.ytimg.com/vi/8Xh8N9pJqjE/maxresdefault.jpg" alt="" loading="eager" />
+        <div class="hero-overlay"></div>
+        <div class="hero-play">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
     </div>
-  </aside>
+  </section>
+
+  <!-- COURSES -->
+  <section id="courses" class="section">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <h2>หลักสูตรทั้งหมด</h2>
+          <p>เรียงลำดับจากเริ่มต้น → ขั้นสูง</p>
+        </div>
+        <div class="filter-bar" role="tablist" id="filterBar">
+          <button class="chip is-active" data-filter="all">ทั้งหมด</button>
+          <button class="chip" data-filter="beginner">เริ่มต้น</button>
+          <button class="chip" data-filter="intermediate">กลาง</button>
+          <button class="chip" data-filter="advanced">สูง</button>
+        </div>
+      </header>
+
+      <div class="course-grid" id="courseGrid">
+        <!-- skeletons -->
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">วิธีเรียน</h2>
+      <ol class="steps">
+        <li>
+          <div class="step-num">01</div>
+          <h3>เลือกคอร์ส</h3>
+          <p>เลือกจาก 7 หลักสูตร เริ่มจาก Beginner ไล่ไป Advanced</p>
+        </li>
+        <li>
+          <div class="step-num">02</div>
+          <h3>เรียนตามลำดับ</h3>
+          <p>ระบบนับเวลาดูจริงจาก YouTube IFrame API ถ้าปิดกลางทางจะแจ้งเตือนกลับมาเรียนต่อ</p>
+        </li>
+        <li>
+          <div class="step-num">03</div>
+          <h3>ส่งการบ้าน</h3>
+          <p>อัปโหลดรูปขึ้น Google Drive แล้วแปะลิงก์ ครูตรวจและให้คะแนน</p>
+        </li>
+        <li>
+          <div class="step-num">04</div>
+          <h3>ได้ใบเซอร์</h3>
+          <p>เรียนครบ 90% และส่งการบ้านครบ รับใบเซอร์ทันที</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews" class="section">
+    <div class="container">
+      <h2 class="section-title">เสียงจากผู้เรียน</h2>
+      <div class="review-grid">
+        <blockquote class="review">
+          <div class="review-stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+          </div>
+          <p>"ระบบติดตามการดูดีมาก ไม่มีทางโกงได้ เพราะนับวินาทีจริง"</p>
+          <footer>
+            <img src="https://i.pravatar.cc/160?img=12" alt="" loading="lazy" />
+            <div><strong>คุณนัท</strong><span>เรียนจบ Beginner</span></div>
+          </footer>
+        </blockquote>
+        <blockquote class="review">
+          <div class="review-stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+          </div>
+          <p>"ฟรีแต่คุณภาพสูง ได้ใบเซอร์ด้วย คุ้มมากครับ"</p>
+          <footer>
+            <img src="https://i.pravatar.cc/160?img=32" alt="" loading="lazy" />
+            <div><strong>คุณพิม</strong><span>เรียนจบ Intermediate</span></div>
+          </footer>
+        </blockquote>
+        <blockquote class="review">
+          <div class="review-stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg>
+          </div>
+          <p>"ชอบตรงที่ส่งการบ้านผ่าน Drive ได้เลย สะดวกมาก"</p>
+          <footer>
+            <img src="https://i.pravatar.cc/160?img=45" alt="" loading="lazy" />
+            <div><strong>คุณโอ๊ต</strong><span>เรียนจบ Advanced</span></div>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section section-alt">
+    <div class="container narrow">
+      <h2 class="section-title">คำถามที่พบบ่อย</h2>
+      <details class="faq"><summary>เรียนฟรีจริงไหม?</summary><p>ฟรี 100% เพราะใช้ Playlist สาธารณะจาก YouTube ที่ได้รับอนุญาต</p></details>
+      <details class="faq"><summary>ได้ใบเซอร์ไหม?</summary><p>ได้ เมื่อเรียนครบ 90% ของคอร์สและส่งการบ้านครบ</p></details>
+      <details class="faq"><summary>นับเวลาดูยังไง?</summary><p>ใช้ YouTube IFrame API นับ <code>currentTime</code> จริง ไม่ใช่แค่กด play</p></details>
+      <details class="faq"><summary>ส่งการบ้านยังไง?</summary><p>อัปโหลดรูปขึ้น Google Drive แล้วแปะลิงก์ในหน้าส่งการบ้าน</p></details>
+      <details class="faq"><summary>ข้อมูลของฉันเก็บไว้ที่ไหน?</summary><p>เก็บใน LocalStorage ของเบราว์เซอร์ + Google Sheets ผ่าน Cloudflare Worker</p></details>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════
+     VIEW: LEARN
+     ═══════════════════════════════════════════════════ -->
+<main id="view-learn" class="view">
+  <div class="container learn-grid">
+
+    <!-- LEFT: PLAYER -->
+    <div>
+      <div class="player-wrap">
+        <div id="ytPlayer"></div>
+      </div>
+
+      <div class="lesson-info">
+        <h1 id="lessonTitle">กำลังโหลด…</h1>
+        <div class="meta">
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span id="lessonDuration">—</span>
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span id="lessonCourse">—</span>
+          </span>
+        </div>
+
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-meta">
+          <span>ความคืบหน้า: <strong id="progressText">0%</strong></span>
+          <span id="syncStatus" class="muted">บันทึกอัตโนมัติทุก 5 วินาที</span>
+        </div>
+      </div>
+
+      <!-- HOMEWORK -->
+      <section class="homework-box">
+        <h3>ส่งการบ้านบทนี้</h3>
+        <p>อัปโหลดรูปขึ้น Google Drive แล้วแปะลิงก์ (ตั้งค่าแชร์ "ทุกคนที่มีลิงก์")</p>
+        <input type="url" class="field" id="hwUrl" placeholder="https://drive.google.com/file/d/..." />
+        <textarea class="field" id="hwNote" placeholder="หมายเหตุถึงครู (ไม่บังคับ)"></textarea>
+        <button class="btn btn-primary" id="hwSubmit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+          ส่งการบ้าน
+        </button>
+      </section>
+    </div>
+
+    <!-- RIGHT: PLAYLIST -->
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h3 id="courseTitle">หลักสูตร</h3>
+        <p id="courseProgress">0 / 0 บทเรียน</p>
+      </div>
+      <ul class="playlist" id="playlist"></ul>
+    </aside>
+
+  </div>
+</main>
+
+<!-- ═══════════════════════════════════════════════════
+     VIEW: DASHBOARD
+     ═══════════════════════════════════════════════════ -->
+<main id="view-dashboard" class="view">
+  <div class="container">
+    <section class="dash-hero">
+      <h1>สวัสดี 👋</h1>
+      <p>นี่คือห้องเรียนของคุณ — เรียนต่อจากที่ค้างไว้ได้เลย</p>
+
+      <div class="dash-stats">
+        <div class="stat-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div class="num" id="statHours">0</div>
+          <div class="label">ชั่วโมงเรียนแล้ว</div>
+        </div>
+        <div class="stat-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <div class="num" id="statLessons">0</div>
+          <div class="label">บทเรียนที่จบ</div>
+        </div>
+        <div class="stat-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>
+          <div class="num" id="statCourses">0</div>
+          <div class="label">คอร์สที่ลงทะเบียน</div>
+        </div>
+        <div class="stat-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+          <div class="num" id="statStreak">0</div>
+          <div class="label">วันติดต่อกัน</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dash-section">
+      <h2>คอร์สของฉัน</h2>
+      <div id="myCourses"></div>
+    </section>
+
+    <section class="dash-section">
+      <h2>การบ้านที่ส่งล่าสุด</h2>
+      <div id="hwList"></div>
+    </section>
+  </div>
+</main>
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════ -->
+<footer class="site-footer" id="siteFooter">
+  <div class="container footer-grid">
+    <div>
+      <div class="brand" style="margin-bottom:.7rem">
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="brand-text"><strong>บ้านภาษาอังกฤษ</strong><em>Landa</em></span>
+      </div>
+      <p class="muted" style="font-size:.88rem">เรียนฟรี คุณภาพสูง พร้อมระบบติดตามครบ</p>
+    </div>
+    <div>
+      <h4>หลักสูตร</h4>
+      <a href="#courses" data-scroll="courses">ทั้งหมด</a>
+      <a href="#courses" data-filter-nav="beginner">เริ่มต้น</a>
+      <a href="#courses" data-filter-nav="intermediate">กลาง</a>
+      <a href="#courses" data-filter-nav="advanced">สูง</a>
+    </div>
+    <div>
+      <h4>ช่วยเหลือ</h4>
+      <a href="#faq" data-scroll="faq">คำถามบ่อย</a>
+      <a href="#">ติดต่อเรา</a>
+      <a href="#">นโยบายความเป็นส่วนตัว</a>
+    </div>
+    <div>
+      <h4>ติดตาม</h4>
+      <div class="socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 8H6v4h3v12h5V12h3.6l.4-4h-4V6.3c0-.9.2-1.3 1.3-1.3H18V0h-3.8C10.6 0 9 1.6 9 4.5z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.8-.5-5.6a2.9 2.9 0 0 0-2-2C18.7 4 12 4 12 4s-6.7 0-8.5.4a2.9 2.9 0 0 0-2 2C1 8.2 1 12 1 12s0 3.8.5 5.6a2.9 2.9 0 0 0 2 2c1.8.4 8.5.4 8.5.4s6.7 0 8.5-.4a2.9 2.9 0 0 0 2-2c.5-1.8.5-5.6.5-5.6zM10 15.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© 2025 บ้านภาษาอังกฤษ Landa — All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════
+     MODAL: SEARCH
+     ═══════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="searchModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>ค้นหาคอร์ส</h3>
+      <button class="icon-btn" data-close-modal aria-label="ปิด">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="text" class="field" id="searchInput" placeholder="พิมพ์ชื่อคอร์ส... เช่น grammar, conversation" autofocus />
+      <div id="searchResults" style="margin-top:1rem"></div>
+    </div>
+  </div>
 </div>
 
-<div class="resume" id="resumeBanner">
-  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-  <div class="txt"><b>กลับไปเรียนต่อไหม?</b><small id="resumeText"></small></div>
-  <button class="go" onclick="resumePlay()">เรียนต่อ</button>
-  <button class="no" onclick="dismissResume()">ปิด</button>
-</div>
-
-<div class="toast" id="toast">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-  <span id="toastMsg"></span>
-</div>
-
+<!-- ═══════════════════════════════════════════════════
+     SCRIPT
+     ═══════════════════════════════════════════════════ -->
 <script>
-/* ============================================================
-   COURSE DATA — 真实频道 & 播放列表，链接来自搜索结果
-   ============================================================ */
-const COURSE = {
-  title: 'Baan English — Real YouTube Course',
-  stages: [
-    {
-      id: 's1', name: '基础入门 (A1-A2)', level: 'A1-A2',
-      items: [
-        {
-          id: 'c1',
-          name: 'English with Beth — 美式英语初学者课程',
-          channel: 'English with Beth',
-          desc: '用“可理解输入”方式教学，从 “Hi, I\'m Beth” 开始，每课 20-27 分钟，逐步进阶。播放列表包含 26+ 课。',
-          ytUrl: 'https://www.youtube.com/playlist?list=PLoQjhQuO0mXktEK_Cbemz2x19chABBTaO',
-          playlistId: 'PLoQjhQuO0mXktEK_Cbemz2x19chABBTaO',
-          lessons: 26,
-          note: '搜索结果确认：39,391 次观看，26+ 课可用[citation:9]'
-        },
-        {
-          id: 'c2',
-          name: 'BBC English in a Minute',
-          channel: 'BBC Learning English',
-          desc: '一分钟英语系列，覆盖语法、词汇、短语。有多个 Series（Series 1-5），每集约 1 分钟。',
-          ytUrl: 'https://www.bbc.co.uk/learningenglish/english/features/s5english_in_a_minute',
-          playlistId: '',
-          lessons: 50,
-          note: 'BBC 官网确认 Series 5 可用，Series 1-4 也有链接[citation:2]'
-        }
-      ]
-    },
-    {
-      id: 's2', name: '语法与发音 (B1)', level: 'B1',
-      items: [
-        {
-          id: 'c3',
-          name: 'English with Lucy — Grammar 播放列表',
-          channel: 'English with Lucy',
-          desc: 'Tenses、Adjectives、Prepositions、Question Tags 等。含 “Learn ALL 16 TENSES in under 30 Minutes” 等热门视频。',
-          ytUrl: 'https://www.youtube.com/results?search_query=english+with+lucy+grammar+playlist',
-          playlistId: '',
-          lessons: 30,
-          note: 'Dek-D 确认 Lucy 有 Grammar 播放列表，覆盖 Tenses/Prepositions 等[citation:11]'
-        },
-        {
-          id: 'c4',
-          name: 'mmmEnglish — 发音与模仿课程',
-          channel: 'mmmEnglish',
-          desc: '连读 (Connected Speech & Linking)、重音、语调、TH 发音、GIRL & WORLD 发音等。含 Imitation Lessons。',
-          ytUrl: 'https://www.youtube.com/results?search_query=mmmenglish+pronunciation+playlist',
-          playlistId: '',
-          lessons: 35,
-          note: '学术论文确认 mmmEnglish 发音播放列表可用，含 Imitation Lessons[citation:13]'
-        }
-      ]
-    },
-    {
-      id: 's3', name: '会话与听力 (B1-B2)', level: 'B1-B2',
-      items: [
-        {
-          id: 'c5',
-          name: 'Vanessa — 5-Hour Speaking Playlist',
-          channel: 'Speak English With Vanessa',
-          desc: 'Vanessa 的 5 小时口语播放列表，包含大量对话和口语训练。还有 “90 Minute English Speaking Practice” 等长视频。',
-          ytUrl: 'https://youtube.com/playlist?list=PLKWcPfZiScgC_6_u5kdcH6qg_YCyQoZ2e',
-          playlistId: 'PLKWcPfZiScgC_6_u5kdcH6qg_YCyQoZ2e',
-          lessons: 15,
-          note: 'YouTube feed 确认播放列表 ID 可用[citation:4]'
-        },
-        {
-          id: 'c6',
-          name: 'American English File Level 3 — 完整课程',
-          channel: 'Soroosh / YouTube',
-          desc: '基于 American English File 2nd Edition Level 3 的完整中级课程。覆盖 past perfect、conditionals、reported speech，含真实生活听力。B1-B2。',
-          ytUrl: 'https://www.youtube.com/playlist?list=PLzvrX7HHSWsJ3moc7QKkn_p_lOANkQmy0',
-          playlistId: 'PLzvrX7HHSWsJ3moc7QKkn_p_lOANkQmy0',
-          lessons: 40,
-          note: 'YouTube 播放列表确认可用，B1-B2 完整课程[citation:7]'
-        }
-      ]
-    },
-    {
-      id: 's4', name: '商务英语 (B2)', level: 'B2',
-      items: [
-        {
-          id: 'c7',
-          name: 'Business English Pod — 925 English',
-          channel: 'Business English Pod',
-          desc: '925 English 系列，面向 A2 级别，覆盖短语动词、表达支持、切换话题等实用商务表达。',
-          ytUrl: 'https://www.businessenglishpod.com/category/video/',
-          playlistId: '',
-          lessons: 44,
-          note: '官网确认 925 English Lesson 40-44 可用[citation:6]'
-        }
-      ]
-    }
-  ]
+/* ═══════════════════════════════════════════════════
+   CONFIG
+   ═══════════════════════════════════════════════════ */
+const CONFIG = {
+  API: '', // ใส่ Cloudflare Worker URL เช่น 'https://landa-api.workers.dev' ถ้าว่างจะใช้ fallback
+  USER_EMAIL_KEY: 'landa.email',
+  LAST_VISIT_KEY: 'landa.lastVisit',
 };
 
-const ALL_COURSES = [];
-COURSE.stages.forEach((s, si) => {
-  s.items.forEach(it => {
-    it.stageIdx = si;
-    it.flatIdx = ALL_COURSES.length;
-    ALL_COURSES.push(it);
-  });
-});
+/* ═══════════════════════════════════════════════════
+   ICONS
+   ═══════════════════════════════════════════════════ */
+const ICON = {
+  clock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  book: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+  users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>`,
+  arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  alert: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+  bell: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>`,
+  play: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`,
+};
 
-/* ============================================================
-   STORAGE
-   ============================================================ */
-const KEY = 'baan_real_tracker_v1';
-function loadData(){
-  try{ return JSON.parse(localStorage.getItem(KEY)) || { courses:{}, lastPlayed:null }; }
-  catch(e){ return { courses:{}, lastPlayed:null }; }
-}
-let data = loadData();
-function saveData(){ try{ localStorage.setItem(KEY, JSON.stringify(data)); }catch(e){} }
-
-/* ============================================================
+/* ═══════════════════════════════════════════════════
    STATE
-   ============================================================ */
-let currentIdx = 0;
-let activeStageFilter = 'all';
-let pendingResume = null;
+   ═══════════════════════════════════════════════════ */
+const State = {
+  courses: [],
+  currentCourse: null,
+  lessons: [],
+  currentIndex: 0,
+  userEmail: localStorage.getItem(CONFIG.USER_EMAIL_KEY) || 'guest@landa.dev',
+  progress: {},
+  player: null,
+  trackerId: null,
+  watchedSeconds: 0,
+  lastSync: 0,
+  currentView: 'home',
+};
 
-/* ============================================================
-   RENDER SIDEBAR
-   ============================================================ */
-function renderSidebar(){
-  const box = document.getElementById('playlist');
-  let html = '';
-  COURSE.stages.forEach((stage, si) => {
-    if(activeStageFilter !== 'all' && activeStageFilter !== stage.id) return;
-    const stageCourses = ALL_COURSES.filter(c => c.stageIdx === si);
-    const done = stageCourses.filter(c => (data.courses[c.id]||{}).done).length;
-    html += `<div class="stage-section">
-      <div class="stage-label">${stage.name}<span>${done}/${stageCourses.length}</span></div>`;
-    stageCourses.forEach(c => {
-      const C = data.courses[c.id] || {};
-      const isDone = C.done;
-      const isActive = ALL_COURSES[currentIdx] && ALL_COURSES[currentIdx].id === c.id;
-      html += `
-        <div class="course-item ${isActive?'active':''}" onclick="selectCourse(${c.flatIdx})">
-          <div class="thumb">
-            <div class="placeholder">🎬</div>
-            ${isDone ? `<div class="done-tick"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>`:''}
-          </div>
-          <div class="info">
-            <div class="name">${c.name}</div>
-            <div class="meta">
-              <span>${c.channel}</span>
-              ${isDone ? `<span class="done">✓ 已完成</span>` : `<span>${c.lessons} lessons</span>`}
-            </div>
-          </div>
-        </div>`;
+/* ═══════════════════════════════════════════════════
+   UTILS
+   ═══════════════════════════════════════════════════ */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+
+function toast(message, type = 'info', timeout = 3000){
+  const container = $('#toastContainer');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  const icon = type === 'success' ? ICON.check : type === 'error' ? ICON.alert : ICON.bell;
+  el.innerHTML = `${icon}<span>${message}</span>`;
+  container.appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity .3s, transform .3s';
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(40px)';
+    setTimeout(() => el.remove(), 300);
+  }, timeout);
+}
+
+function escapeHtml(str){
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function fmtPrice(p){
+  if (!p || p === 0) return { free: true, html: '<span class="now">ฟรี</span>' };
+  return { free: false, html: `<span class="now">฿${Number(p).toLocaleString()}</span>` };
+}
+
+const levelLabel = l => ({ beginner:'เริ่มต้น', intermediate:'กลาง', advanced:'สูง' }[l] || l);
+
+/* ═══════════════════════════════════════════════════
+   FALLBACK COURSE DATA (ถ้าไม่มี API)
+   ═══════════════════════════════════════════════════ */
+const FALLBACK_COURSES = [
+  { id:'eng-001', title:'ภาษาอังกฤษเริ่มจากศูนย์', level:'beginner', price:0, cover:'https://i.ytimg.com/vi/8Xh8N9pJqjE/maxresdefault.jpg', total_hours:20, lessons_count:42, students:1240, description:'ปูพื้นฐานตั้งแต่ ABC จนพูดประโยคง่าย ๆ ได้' },
+  { id:'eng-002', title:'บทสนทนาชีวิตประจำวัน', level:'beginner', price:0, cover:'https://i.ytimg.com/vi/9bZkp7q19f0/maxresdefault.jpg', total_hours:15, lessons_count:30, students:980, description:'ฝึกพูดในสถานการณ์จริง ร้านกาแฟ สนามบิน โรงแรม' },
+  { id:'eng-003', title:'ไวยากรณ์แกนกลาง', level:'intermediate', price:0, cover:'https://i.ytimg.com/vi/kJQP7kiw5Fk/maxresdefault.jpg', total_hours:18, lessons_count:36, students:760, description:'Tense, Modal, Conditional ครบจบในที่เดียว' },
+  { id:'eng-004', title:'ฟังให้แตกฉาน', level:'intermediate', price:0, cover:'https://i.ytimg.com/vi/JGwWNGJdvx8/maxresdefault.jpg', total_hours:14, lessons_count:28, students:540, description:'ฝึกฟังสำเนียงเจ้าของภาษา ทั้ง US/UK/AU' },
+  { id:'eng-005', title:'อังกฤษเพื่อการทำงาน', level:'advanced', price:0, cover:'https://i.ytimg.com/vi/RgKAFK5djSk/maxresdefault.jpg', total_hours:12, lessons_count:24, students:410, description:'อีเมล formal, นำเสนอ, เจรจาต่อรอง' },
+  { id:'eng-006', title:'เตรียม IELTS 6.5+', level:'advanced', price:0, cover:'https://i.ytimg.com/vi/CevxZvSJLk8/maxresdefault.jpg', total_hours:16, lessons_count:32, students:320, description:'เทคนิคทำโจทย์ 4 พาร์ท พร้อม Mock Test' },
+  { id:'eng-007', title:'ออกเสียงให้เหมือนเจ้าของภาษา', level:'intermediate', price:0, cover:'https://i.ytimg.com/vi/fJ9rUzIMcZQ/maxresdefault.jpg', total_hours:8, lessons_count:20, students:690, description:'IPA, Stress, Intonation และ Connected Speech' },
+];
+
+/* ═══════════════════════════════════════════════════
+   YOUTUBE VIDEO POOL (สำหรับ generate lessons)
+   ═══════════════════════════════════════════════════ */
+const YT_POOL = [
+  '8Xh8N9pJqjE','9bZkp7q19f0','kJQP7kiw5Fk','JGwWNGJdvx8',
+  'RgKAFK5djSk','CevxZvSJLk8','fJ9rUzIMcZQ','OPf0YbXqDm0',
+  '60ItHLz5WEA','YQHsXMglC9A','hT_nvWreIhg','PT2_F-1esPk',
+];
+
+/* ═══════════════════════════════════════════════════
+   API LAYER
+   ═══════════════════════════════════════════════════ */
+const API = {
+  async getCourses(){
+    if (!CONFIG.API) return FALLBACK_COURSES;
+    try {
+      const r = await fetch(`${CONFIG.API}/courses`);
+      if (!r.ok) throw new Error(r.status);
+      return await r.json();
+    } catch (e){
+      console.warn('[API] fallback courses:', e.message);
+      return FALLBACK_COURSES;
+    }
+  },
+
+  async getLessons(courseId){
+    if (CONFIG.API){
+      try {
+        const r = await fetch(`${CONFIG.API}/lessons?course_id=${encodeURIComponent(courseId)}`);
+        if (r.ok) return await r.json();
+      } catch (e){ console.warn('[API] fallback lessons:', e.message); }
+    }
+    // Generate 100 lessons
+    const course = State.courses.find(c => c.id === courseId) || FALLBACK_COURSES[0];
+    const total = 100;
+    return Array.from({ length: total }, (_, i) => ({
+      id: `${courseId}-L${i+1}`,
+      title: `บทที่ ${i+1} — ${course.title}`,
+      youtube_id: YT_POOL[i % YT_POOL.length],
+      duration_min: 12 + (i % 20),
+      is_free: i < 3,
+    }));
+  },
+
+  async getProgress(email, courseId){
+    if (CONFIG.API){
+      try {
+        const r = await fetch(`${CONFIG.API}/progress?email=${encodeURIComponent(email)}&course_id=${encodeURIComponent(courseId)}`);
+        if (r.ok) return await r.json();
+      } catch (e){ console.warn('[API] progress local only'); }
+    }
+    return JSON.parse(localStorage.getItem(`landa.progress.${courseId}`) || '{}');
+  },
+
+  async saveProgress(payload){
+    localStorage.setItem(`landa.progress.${payload.course_id}`, JSON.stringify(State.progress));
+    if (!CONFIG.API) return true;
+    try {
+      const r = await fetch(`${CONFIG.API}/progress`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      return r.ok;
+    } catch (e){ console.warn('saveProgress failed', e); return false; }
+  },
+
+  async submitHomework(payload){
+    if (!CONFIG.API) return { ok: true, local: true };
+    try {
+      const r = await fetch(`${CONFIG.API}/homework`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      return { ok: r.ok };
+    } catch (e){ return { ok: false, error: e.message }; }
+  },
+};
+
+/* ═══════════════════════════════════════════════════
+   ROUTER (simple SPA)
+   ═══════════════════════════════════════════════════ */
+function showView(name){
+  State.currentView = name;
+  $$('.view').forEach(v => v.classList.remove('active'));
+  const target = $(`#view-${name}`);
+  if (target) target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (name === 'dashboard') renderDashboard();
+}
+
+function bindRouter(){
+  $$('[data-nav]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      const target = el.dataset.nav;
+      if (target === 'courses'){
+        showView('home');
+        setTimeout(() => {
+          const el2 = $('#courses');
+          if (el2) el2.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else {
+        showView(target);
+      }
     });
-    html += `</div>`;
   });
-  box.innerHTML = html;
-}
 
-function renderStageTabs(){
-  const tabs = document.getElementById('stageTabs');
-  const allDone = ALL_COURSES.filter(c => (data.courses[c.id]||{}).done).length;
-  let html = `<button class="stab ${activeStageFilter==='all'?'active':''}" onclick="setStage('all')">ทั้งหมด (${allDone}/${ALL_COURSES.length})</button>`;
-  COURSE.stages.forEach(s => {
-    const sc = ALL_COURSES.filter(c => c.stageIdx === COURSE.stages.indexOf(s));
-    const d = sc.filter(c => (data.courses[c.id]||{}).done).length;
-    html += `<button class="stab ${activeStageFilter===s.id?'active':''}" onclick="setStage('${s.id}')">${s.name.split(' ')[0]} (${d}/${sc.length})</button>`;
+  $$('[data-scroll]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      if (State.currentView !== 'home'){
+        showView('home');
+        setTimeout(() => scrollToId(el.dataset.scroll), 150);
+      } else {
+        scrollToId(el.dataset.scroll);
+      }
+    });
   });
-  tabs.innerHTML = html;
+
+  $$('[data-filter-nav]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      const level = el.dataset.filterNav;
+      if (State.currentView !== 'home') showView('home');
+      setTimeout(() => {
+        scrollToId('courses');
+        const chip = $(`.filter-bar .chip[data-filter="${level}"]`);
+        if (chip) chip.click();
+      }, 150);
+    });
+  });
+
+  window.addEventListener('hashchange', handleHash);
+  handleHash();
 }
 
-function setStage(id){
-  activeStageFilter = id;
-  renderSidebar();
-  renderStageTabs();
+function handleHash(){
+  const hash = location.hash.replace('#', '');
+  if (hash === 'dashboard') showView('dashboard');
 }
 
-/* ============================================================
-   SELECT COURSE
-   ============================================================ */
-function selectCourse(idx){
-  if(idx < 0 || idx >= ALL_COURSES.length) return;
-  currentIdx = idx;
-  const c = ALL_COURSES[idx];
-  const stage = COURSE.stages[c.stageIdx];
-
-  document.getElementById('crumb').textContent = `${stage.name} • ${c.channel}`;
-  document.getElementById('courseTitle').textContent = c.name;
-  document.getElementById('courseSrc').innerHTML = `<svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg> ${c.channel} • ${c.lessons} lessons`;
-  document.getElementById('courseDesc').textContent = c.desc;
-
-  // Show YouTube link
-  const placeholder = document.getElementById('playerPlaceholder');
-  const ytBtn = document.getElementById('openYtBtn');
-  document.getElementById('placeholderText').textContent = c.note;
-  ytBtn.href = c.ytUrl;
-  ytBtn.classList.remove('hidden');
-
-  data.lastPlayed = { id: c.id, ts: Date.now() };
-  saveData();
-  renderSidebar();
-  renderStats();
+function scrollToId(id){
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ============================================================
-   MARK DONE
-   ============================================================ */
-function markDone(id){
-  if(!data.courses[id]) data.courses[id] = {};
-  data.courses[id].done = true;
-  data.courses[id].doneAt = Date.now();
-  saveData();
-  renderSidebar();
-  renderProgress();
-  renderStats();
-  renderStageTabs();
-  toast('✓ ทำเครื่องหมายว่าเรียนจบแล้ว');
+/* ═══════════════════════════════════════════════════
+   RENDER: COURSES
+   ═══════════════════════════════════════════════════ */
+function courseCardHTML(c){
+  const p = fmtPrice(c.price);
+  const cover = c.cover || '';
+  return `
+    <article class="course-card" data-level="${c.level}" data-id="${escapeHtml(c.id)}">
+      <a href="#" class="course-thumb course-open" data-id="${escapeHtml(c.id)}">
+        <img src="${escapeHtml(cover)}" alt="${escapeHtml(c.title)}" loading="lazy" width="640" height="360" />
+        <span class="course-level level-${c.level}">${levelLabel(c.level)}</span>
+        <span class="course-duration">${ICON.clock}${c.total_hours || '—'} ชม.</span>
+      </a>
+      <div class="course-body">
+        <h3>${escapeHtml(c.title)}</h3>
+        <p class="course-desc">${escapeHtml(c.description || '')}</p>
+        <div class="course-meta">
+          <span>${ICON.book}${c.lessons_count || '—'} บท</span>
+          <span>${ICON.users}${(c.students || 0).toLocaleString()}</span>
+        </div>
+        <div class="course-foot">
+          <div class="price ${p.free ? 'free' : ''}">${p.html}</div>
+          <button class="btn btn-primary course-open" data-id="${escapeHtml(c.id)}">
+            เริ่มเรียน ${ICON.arrow}
+          </button>
+        </div>
+      </div>
+    </article>
+  `;
 }
 
-/* ============================================================
-   PROGRESS & STATS
-   ============================================================ */
-function renderProgress(){
-  const done = ALL_COURSES.filter(c => (data.courses[c.id]||{}).done).length;
-  const total = ALL_COURSES.length;
-  const pct = total ? Math.round((done/total)*100) : 0;
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressNum').innerHTML = `${done} / ${total}<small>คอร์สที่เรียนจบ</small>`;
+function renderCourses(list){
+  const grid = $('#courseGrid');
+  if (!grid) return;
+  if (!list.length){
+    grid.innerHTML = `<p class="muted" style="grid-column:1/-1;text-align:center;padding:3rem">ยังไม่มีคอร์ส</p>`;
+    return;
+  }
+  grid.innerHTML = list.map(courseCardHTML).join('');
+
+  $$('.course-open', grid).forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      const id = el.dataset.id;
+      openCourse(id);
+    });
+  });
 }
 
-function renderStats(){
-  const done = ALL_COURSES.filter(c => (data.courses[c.id]||{}).done).length;
-  const total = ALL_COURSES.length;
-  const pct = total ? Math.round((done/total)*100) : 0;
-  document.getElementById('statDone').textContent = done;
-  document.getElementById('statPct').textContent = pct + '%';
-  document.getElementById('statTotal').textContent = total;
+function bindFilters(){
+  $$('.filter-bar .chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      $$('.filter-bar .chip').forEach(c => c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+      const f = chip.dataset.filter;
+      const list = f === 'all' ? State.courses : State.courses.filter(c => c.level === f);
+      renderCourses(list);
+    });
+  });
 }
 
-/* ============================================================
-   RESUME
-   ============================================================ */
-function checkResume(){
-  const lp = data.lastPlayed;
-  if(!lp) return;
-  const c = ALL_COURSES.find(x => x.id === lp.id);
-  if(!c) return;
-  if((data.courses[c.id]||{}).done) return;
-  pendingResume = { id: lp.id };
-  document.getElementById('resumeText').textContent = c.name;
-  document.getElementById('resumeBanner').classList.add('show');
-}
-function resumePlay(){
-  if(!pendingResume) return;
-  const i = ALL_COURSES.findIndex(c => c.id === pendingResume.id);
-  if(i >= 0) selectCourse(i);
-  dismissResume();
-}
-function dismissResume(){
-  document.getElementById('resumeBanner').classList.remove('show');
-  pendingResume = null;
+/* ═══════════════════════════════════════════════════
+   LEARN VIEW
+   ═══════════════════════════════════════════════════ */
+async function openCourse(courseId){
+  State.currentCourse = State.courses.find(c => c.id === courseId) || FALLBACK_COURSES[0];
+  showView('learn');
+  $('#courseTitle').textContent = State.currentCourse.title;
+  $('#playlist').innerHTML = '<li style="padding:1rem;color:var(--c-muted);font-size:.85rem">กำลังโหลด…</li>';
+
+  // โหลด progress ก่อน
+  State.progress = await API.getProgress(State.userEmail, courseId);
+
+  // โหลด lessons
+  State.lessons = await API.getLessons(courseId);
+
+  // render playlist
+  renderPlaylist();
+
+  // load แรกสุดที่ยังไม่จบ หรือบทแรก
+  const firstIncomplete = State.lessons.findIndex(l => !State.progress[l.id]?.completed);
+  loadLesson(firstIncomplete >= 0 ? firstIncomplete : 0);
 }
 
-/* ============================================================
-   RESET
-   ============================================================ */
-function resetAll(){
-  if(!confirm('清除全部学习进度？')) return;
-  localStorage.removeItem(KEY);
-  data = loadData();
-  selectCourse(0);
-  renderSidebar();
-  renderProgress();
-  renderStats();
-  renderStageTabs();
-  toast('已清除');
+function renderPlaylist(){
+  const ul = $('#playlist');
+  ul.innerHTML = State.lessons.map((l, i) => {
+    const p = State.progress[l.id] || {};
+    const cls = [
+      i === State.currentIndex ? 'is-active' : '',
+      p.completed ? 'is-done' : '',
+    ].join(' ');
+    return `
+      <li class="${cls}" data-idx="${i}">
+        <button>
+          <span class="lesson-num">${p.completed ? '✓' : i+1}</span>
+          <span class="lesson-title">${escapeHtml(l.title)}</span>
+          <span class="lesson-dur">${l.duration_min}′</span>
+        </button>
+      </li>
+    `;
+  }).join('');
+
+  $$('#playlist li').forEach(li => {
+    li.querySelector('button').addEventListener('click', () => {
+      loadLesson(Number(li.dataset.idx));
+    });
+  });
+
+  const done = State.lessons.filter(l => State.progress[l.id]?.completed).length;
+  $('#courseProgress').textContent = `${done} / ${State.lessons.length} บทเรียน`;
 }
 
-/* ============================================================
-   TOAST
-   ============================================================ */
-let toastTimer;
-function toast(msg){
-  const el = document.getElementById('toast');
-  document.getElementById('toastMsg').textContent = msg;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+function loadLesson(idx){
+  if (idx < 0 || idx >= State.lessons.length) return;
+  State.currentIndex = idx;
+  const l = State.lessons[idx];
+
+  $('#lessonTitle').textContent = l.title;
+  $('#lessonDuration').textContent = `${l.duration_min} นาที`;
+  $('#lessonCourse').textContent = `บทที่ ${idx+1}/${State.lessons.length}`;
+
+  State.watchedSeconds = State.progress[l.id]?.watched_seconds || 0;
+  const startPercent = State.progress[l.id]?.percent || 0;
+  updateProgressUI(startPercent);
+
+  if (!State.player){
+    State.player = new YT.Player('ytPlayer', {
+      videoId: l.youtube_id,
+      playerVars: { rel: 0, modestbranding: 1, playsinline: 1 },
+      events: { onStateChange: onPlayerState },
+    });
+  } else {
+    State.player.loadVideoById(l.youtube_id);
+  }
+
+  $$('#playlist li').forEach((li, i) => {
+    li.classList.toggle('is-active', i === idx);
+  });
 }
 
-/* ============================================================
+function updateProgressUI(percent){
+  $('#progressFill').style.width = Math.min(100, percent) + '%';
+  $('#progressText').textContent = Math.round(percent) + '%';
+}
+
+function onPlayerState(e){
+  if (e.data === YT.PlayerState.PLAYING) startTracking();
+  else stopTracking();
+}
+
+function startTracking(){
+  if (State.trackerId) return;
+  State.trackerId = setInterval(() => {
+    if (!State.player || typeof State.player.getCurrentTime !== 'function') return;
+    const t = State.player.getCurrentTime();
+    const dur = State.player.getDuration();
+    if (!dur) return;
+
+    if (t > State.watchedSeconds) State.watchedSeconds = t;
+
+    const percent = Math.min(100, Math.round((State.watchedSeconds / dur) * 100));
+    updateProgressUI(percent);
+
+    const now = Date.now();
+    if (now - State.lastSync > 5000){
+      State.lastSync = now;
+      syncProgress(State.lessons[State.currentIndex].id, Math.floor(State.watchedSeconds), percent);
+    }
+
+    if (percent >= 90){
+      markCompleted(State.lessons[State.currentIndex].id);
+      stopTracking();
+    }
+  }, 1000);
+}
+
+function stopTracking(){
+  if (State.trackerId){ clearInterval(State.trackerId); State.trackerId = null; }
+}
+
+async function syncProgress(lessonId, seconds, percent){
+  State.progress[lessonId] = { ...(State.progress[lessonId] || {}), percent, watched_seconds: seconds };
+  const ok = await API.saveProgress({
+    email: State.userEmail,
+    course_id: State.currentCourse.id,
+    lesson_id: lessonId,
+    watched_seconds: seconds,
+    percent,
+  });
+  const status = $('#syncStatus');
+  if (status){
+    status.textContent = ok ? 'บันทึกแล้ว ✓' : 'บันทึกออฟไลน์';
+    setTimeout(() => { status.textContent = 'บันทึกอัตโนมัติทุก 5 วินาที'; }, 2000);
+  }
+}
+
+async function markCompleted(lessonId){
+  State.progress[lessonId] = { ...(State.progress[lessonId] || {}), completed: true, percent: 100 };
+  await syncProgress(lessonId, State.watchedSeconds, 100);
+  renderPlaylist();
+  toast('จบบทเรียนแล้ว ✓', 'success');
+
+  if (State.currentIndex + 1 < State.lessons.length){
+    setTimeout(() => loadLesson(State.currentIndex + 1), 1200);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   HOMEWORK
+   ═══════════════════════════════════════════════════ */
+function bindHomework(){
+  const btn = $('#hwSubmit');
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    const url = $('#hwUrl').value.trim();
+    const note = $('#hwNote').value.trim();
+    if (!url){
+      toast('กรุณาแปะลิงก์ Google Drive ก่อน', 'warn');
+      return;
+    }
+    if (!/^https?:\/\//.test(url)){
+      toast('ลิงก์ไม่ถูกต้อง ต้องขึ้นต้นด้วย http:// หรือ https://', 'error');
+      return;
+    }
+    const lesson = State.lessons[State.currentIndex];
+    if (!lesson){ toast('ยังไม่มีบทเรียนที่เลือก', 'error'); return; }
+
+    btn.disabled = true;
+    const res = await API.submitHomework({
+      email: State.userEmail,
+      course_id: State.currentCourse.id,
+      lesson_id: lesson.id,
+      drive_url: url,
+      note,
+    });
+    btn.disabled = false;
+
+    if (res.ok){
+      toast('ส่งการบ้านสำเร็จ ✓ ครูจะตรวจและให้คะแนน', 'success');
+      $('#hwUrl').value = '';
+      $('#hwNote').value = '';
+      // save local
+      const hwKey = `landa.hw.${State.currentCourse.id}`;
+      const list = JSON.parse(localStorage.getItem(hwKey) || '[]');
+      list.unshift({ lesson_id: lesson.id, lesson_title: lesson.title, drive_url: url, note, submitted_at: new Date().toISOString(), status: 'pending' });
+      localStorage.setItem(hwKey, JSON.stringify(list.slice(0, 50)));
+    } else {
+      toast('ส่งไม่สำเร็จ ลองอีกครั้ง', 'error');
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   DASHBOARD
+   ═══════════════════════════════════════════════════ */
+function renderDashboard(){
+  // คำนวณจาก localStorage
+  let totalHours = 0, totalLessons = 0, coursesCount = 0;
+  const courseProgressList = [];
+
+  State.courses.forEach(c => {
+    const prog = JSON.parse(localStorage.getItem(`landa.progress.${c.id}`) || '{}');
+    const done = Object.values(prog).filter(p => p.completed).length;
+    const totalSeconds = Object.values(prog).reduce((a, p) => a + (p.watched_seconds || 0), 0);
+    if (done > 0 || totalSeconds > 0){
+      coursesCount++;
+      totalHours += totalSeconds / 3600;
+      totalLessons += done;
+      courseProgressList.push({
+        id: c.id,
+        title: c.title,
+        cover: c.cover,
+        percent: Math.round((done / (c.lessons_count || 100)) * 100),
+        done_lessons: done,
+        total_lessons: c.lessons_count || 100,
+      });
+    }
+  });
+
+  $('#statHours').textContent = Math.round(totalHours);
+  $('#statLessons').textContent = totalLessons;
+  $('#statCourses').textContent = coursesCount;
+
+  // streak
+  const lastVisit = Number(localStorage.getItem(CONFIG.LAST_VISIT_KEY) || 0);
+  const days = lastVisit ? Math.floor((Date.now() - lastVisit) / 86400000) : 0;
+  const streak = JSON.parse(localStorage.getItem('landa.streak') || '0');
+  $('#statStreak').textContent = streak;
+
+  // courses
+  const wrap = $('#myCourses');
+  if (!courseProgressList.length){
+    wrap.innerHTML = `<p class="muted">ยังไม่ได้เริ่มเรียนคอร์สไหน — <a href="#" data-nav="courses" style="color:var(--c-primary)">เลือกคอร์สเลย</a></p>`;
+    $$('[data-nav="courses"]', wrap).forEach(el => {
+      el.addEventListener('click', e => { e.preventDefault(); showView('home'); setTimeout(() => scrollToId('courses'), 150); });
+    });
+  } else {
+    wrap.innerHTML = courseProgressList.map(c => `
+      <div class="my-course">
+        <img src="${escapeHtml(c.cover)}" alt="" loading="lazy" />
+        <div>
+          <h3>${escapeHtml(c.title)}</h3>
+          <div class="progress-bar"><div class="progress-fill" style="width:${c.percent}%"></div></div>
+          <div class="pct">${c.percent}% · ${c.done_lessons}/${c.total_lessons} บท</div>
+        </div>
+        <button class="btn btn-primary course-open" data-id="${escapeHtml(c.id)}">
+          เรียนต่อ ${ICON.arrow}
+        </button>
+      </div>
+    `).join('');
+    $$('.course-open', wrap).forEach(el => {
+      el.addEventListener('click', () => openCourse(el.dataset.id));
+    });
+  }
+
+  // homework
+  const hwList = $('#hwList');
+  const allHw = [];
+  State.courses.forEach(c => {
+    const list = JSON.parse(localStorage.getItem(`landa.hw.${c.id}`) || '[]');
+    list.forEach(h => allHw.push({ ...h, course_id: c.id }));
+  });
+  allHw.sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
+
+  if (!allHw.length){
+    hwList.innerHTML = `<p class="muted">ยังไม่มีการบ้านที่ส่ง</p>`;
+  } else {
+    hwList.innerHTML = allHw.slice(0, 10).map(h => `
+      <div class="my-course" style="grid-template-columns:1fr auto">
+        <div>
+          <h3>${escapeHtml(h.lesson_title || h.lesson_id)}</h3>
+          <p class="muted" style="font-size:.82rem;margin-top:.4rem">
+            ส่งเมื่อ ${new Date(h.submitted_at).toLocaleString('th-TH')}
+            · สถานะ: ${h.status === 'graded' ? `ตรวจแล้ว (${h.score}/10)` : 'รอตรวจ'}
+          </p>
+        </div>
+        <a href="${escapeHtml(h.drive_url)}" target="_blank" rel="noopener" class="btn btn-ghost">ดูไฟล์</a>
+      </div>
+    `).join('');
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   SEARCH MODAL
+   ═══════════════════════════════════════════════════ */
+function bindSearch(){
+  const modal = $('#searchModal');
+  const input = $('#searchInput');
+  const results = $('#searchResults');
+
+  $('#searchBtn').addEventListener('click', () => {
+    modal.classList.add('open');
+    setTimeout(() => input.focus(), 100);
+  });
+
+  modal.addEventListener('click', e => {
+    if (e.target === modal || e.target.closest('[data-close-modal]')){
+      modal.classList.remove('open');
+      input.value = '';
+      results.innerHTML = '';
+    }
+  });
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q){ results.innerHTML = ''; return; }
+    const hits = State.courses.filter(c =>
+      c.title.toLowerCase().includes(q) || (c.description || '').toLowerCase().includes(q)
+    );
+    if (!hits.length){
+      results.innerHTML = `<p class="muted" style="font-size:.88rem">ไม่พบคอร์สที่ตรงกัน</p>`;
+      return;
+    }
+    results.innerHTML = hits.map(c => `
+      <button class="btn btn-ghost btn-block course-open" data-id="${escapeHtml(c.id)}" style="justify-content:flex-start;text-align:left;margin-bottom:.5rem">
+        ${escapeHtml(c.title)}
+      </button>
+    `).join('');
+    $$('.course-open', results).forEach(el => {
+      el.addEventListener('click', () => {
+        modal.classList.remove('open');
+        openCourse(el.dataset.id);
+      });
+    });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')){
+      modal.classList.remove('open');
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   HEADER SCROLL
+   ═══════════════════════════════════════════════════ */
+function bindHeaderScroll(){
+  const header = $('#siteHeader');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 10);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+/* ═══════════════════════════════════════════════════
+   RETURN REMINDER
+   ═══════════════════════════════════════════════════ */
+function checkReturnReminder(){
+  const lastVisit = Number(localStorage.getItem(CONFIG.LAST_VISIT_KEY) || 0);
+  const now = Date.now();
+  const days = lastVisit ? (now - lastVisit) / 86400000 : 0;
+
+  if (lastVisit && days >= 1 && days < 365){
+    const bar = document.createElement('div');
+    bar.className = 'reminder-banner';
+    bar.innerHTML = `
+      ${ICON.bell}
+      <span>ไม่ได้เข้าเรียน ${Math.floor(days)} วัน — กลับมาเรียนต่อกันเถอะ!</span>
+      <button class="btn btn-primary" data-resume>เรียนต่อ</button>
+      <button class="icon-btn" data-dismiss aria-label="ปิด" style="width:28px;height:28px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    `;
+    document.body.appendChild(bar);
+
+    bar.querySelector('[data-resume]').addEventListener('click', () => {
+      bar.remove();
+      const lastCourse = localStorage.getItem('landa.lastCourse');
+      if (lastCourse){
+        openCourse(lastCourse);
+      } else {
+        showView('dashboard');
+      }
+    });
+    bar.querySelector('[data-dismiss]').addEventListener('click', () => bar.remove());
+  }
+
+  // update last visit + streak
+  if (lastVisit){
+    const lastDate = new Date(lastVisit).toDateString();
+    const today = new Date(now).toDateString();
+    const yesterday = new Date(now - 86400000).toDateString();
+    let streak = Number(localStorage.getItem('landa.streak') || '0');
+    if (lastDate === yesterday) streak++;
+    else if (lastDate !== today) streak = 1;
+    localStorage.setItem('landa.streak', String(streak));
+  } else {
+    localStorage.setItem('landa.streak', '1');
+  }
+  localStorage.setItem(CONFIG.LAST_VISIT_KEY, String(now));
+}
+
+/* ═══════════════════════════════════════════════════
+   SAVE LAST COURSE
+   ═══════════════════════════════════════════════════ */
+const _openCourseOrig = openCourse;
+window.openCourse = async function(courseId){
+  localStorage.setItem('landa.lastCourse', courseId);
+  await _openCourseOrig(courseId);
+};
+
+/* ═══════════════════════════════════════════════════
+   YOUTUBE API READY
+   ═══════════════════════════════════════════════════ */
+window.onYouTubeIframeAPIReady = function(){
+  // ready
+};
+
+/* ═══════════════════════════════════════════════════
    INIT
-   ============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
-  selectCourse(0);
-  renderSidebar();
-  renderProgress();
-  renderStats();
-  renderStageTabs();
-  setTimeout(checkResume, 1500);
-});
+   ═══════════════════════════════════════════════════ */
+(async function init(){
+  bindHeaderScroll();
+  bindRouter();
+  bindSearch();
+  bindHomework();
+
+  // โหลดคอร์ส
+  State.courses = await API.getCourses();
+  renderCourses(State.courses);
+  bindFilters();
+
+  // ตรวจสอบ reminder
+  setTimeout(checkReturnReminder, 800);
+
+  // save progress ก่อนปิดหน้า
+  window.addEventListener('beforeunload', () => {
+    if (State.currentCourse && State.lessons[State.currentIndex]){
+      const l = State.lessons[State.currentIndex];
+      const dur = l.duration_min * 60;
+      const percent = Math.min(100, Math.round((State.watchedSeconds / dur) * 100));
+      const payload = {
+        email: State.userEmail,
+        course_id: State.currentCourse.id,
+        lesson_id: l.id,
+        watched_seconds: Math.floor(State.watchedSeconds),
+        percent,
+      };
+      localStorage.setItem(`landa.progress.${payload.course_id}`, JSON.stringify(State.progress));
+      if (CONFIG.API && navigator.sendBeacon){
+        navigator.sendBeacon(
+          `${CONFIG.API}/progress`,
+          new Blob([JSON.stringify(payload)], { type: 'application/json' })
+        );
+      }
+    }
+  });
+
+  console.log('%c🏠 บ้านภาษาอังกฤษ Landa', 'font-size:16px;font-weight:bold;color:#4f8cff');
+  console.log('%cโหลดเสร็จแล้ว — เปิด Cloudflare Worker ได้ใน CONFIG.API', 'color:#8b93a8');
+})();
 </script>
+
+<!-- YouTube IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
