@@ -3,152 +3,188 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Baan English Landa — Real Course Tracker</title>
+<title>Baan English — Real YouTube Course Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0B1220; --surface:#111827; --surface2:#1F2937;
-  --ink:#F9FAFB; --muted:#9CA3AF; --line:#374151;
-  --amber:#F59E0B; --emerald:#10B981; --sky:#0EA5E9; --rose:#F43F5E;
-  --radius:14px;
+  --bg:#0F172A; --ink:#0F172A; --muted:#64748B;
+  --line:#E2E8F0; --amber:#F59E0B; --emerald:#10B981;
+  --sky:#0EA5E9; --rose:#F43F5E;
+  --shadow:0 10px 30px -12px rgba(15,23,42,.25);
+  --shadow-lg:0 25px 50px -12px rgba(15,23,42,.35);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#F3F4F6;color:#111827;font-family:'Inter','Noto Sans Thai',system-ui,sans-serif;line-height:1.6}
+html,body{background:#F8FAFC;color:var(--ink);font-family:'Inter','Noto Sans Thai',system-ui,sans-serif;line-height:1.6}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 .icon{width:18px;height:18px;stroke-width:2;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+.hidden{display:none!important}
 
-/* Layout */
-.app{display:grid;grid-template-columns:1fr 380px;min-height:100vh;max-width:1400px;margin:0 auto;background:#F3F4F6}
+/* NAV */
+.nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
+.nav .container{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px}
+.brand-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--amber),#EA580C);border-radius:10px;display:grid;place-items:center}
+.brand-mark svg{width:20px;height:20px;stroke:#fff}
+.nav-back{display:flex;align-items:center;gap:6px;color:#475569;font-weight:600;font-size:14px;padding:8px 14px;border-radius:9px;transition:.2s}
+.nav-back:hover{background:#F1F5F9}
+.user-chip{display:flex;align-items:center;gap:10px;padding:5px 12px 5px 5px;background:#F1F5F9;border-radius:99px;font-size:13.5px;font-weight:600}
+.user-chip .av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#8B5CF6,var(--sky));display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+
+/* LAYOUT */
+.app{display:grid;grid-template-columns:1fr 400px;min-height:calc(100vh - 64px)}
 @media(max-width:1024px){.app{grid-template-columns:1fr}}
 
-/* Player */
-.player-area{background:var(--bg);padding:20px;display:flex;flex-direction:column;gap:16px}
-.player-box{position:relative;background:#000;border-radius:var(--radius);overflow:hidden;aspect-ratio:16/9}
-.player-box iframe{width:100%;height:100%;border:0;display:block}
-.player-loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:13px;background:linear-gradient(135deg,#1F2937,#111827)}
-.fallback-btn{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.8);color:#fff;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;backdrop-filter:blur(8px)}
-.fallback-btn:hover{background:var(--rose)}
+/* STAGE */
+.stage{background:#0B1220;padding:24px;display:flex;flex-direction:column;gap:20px}
+.player-wrap{position:relative;background:#000;border-radius:16px;overflow:hidden;aspect-ratio:16/9;box-shadow:var(--shadow-lg)}
+.player-wrap iframe{width:100%;height:100%;border:0}
+.player-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#94A3B8;gap:12px;background:linear-gradient(135deg,#1E293B,#0F172A)}
+.player-placeholder svg{width:48px;height:48px;stroke:var(--amber);fill:none}
+.open-yt-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;background:var(--rose);color:#fff;font-size:13px;font-weight:700;transition:.2s}
+.open-yt-btn:hover{background:#BE123C;transform:translateY(-1px)}
 
-/* Info */
-.info-card{background:#fff;border-radius:var(--radius);padding:20px}
+/* INFO CARD */
+.info-card{background:#fff;border-radius:16px;padding:22px;box-shadow:var(--shadow)}
 .info-card .crumb{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.info-card h1{font-size:18px;font-weight:700;line-height:1.35;margin-bottom:8px}
-.info-card .src{font-size:12.5px;color:var(--sky);font-weight:600;display:flex;align-items:center;gap:6px;margin-bottom:10px}
-.info-card .desc{font-size:13.5px;color:#4B5563;padding-top:12px;border-top:1px solid #E5E7EB}
+.info-card h1{font-size:20px;font-weight:800;line-height:1.35;margin-bottom:8px}
+.info-card .src{font-size:13px;color:var(--sky);font-weight:600;display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.info-card .desc{font-size:14px;color:#4B5563;padding-top:14px;border-top:1px solid var(--line)}
 
-/* Progress Bar */
-.progress-card{background:#fff;border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px}
-.progress-track{flex:1;height:8px;background:#E5E7EB;border-radius:99px;overflow:hidden}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--amber),#F97316);border-radius:99px;transition:width .4s ease}
-.progress-num{font-size:14px;font-weight:800;white-space:nowrap}
+/* PROGRESS */
+.progress-card{background:#fff;border-radius:16px;padding:18px 22px;box-shadow:var(--shadow);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.progress-track{flex:1;min-width:180px;height:10px;background:#F1F5F9;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--amber),#F97316);border-radius:99px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.progress-num{font-size:16px;font-weight:800;white-space:nowrap}
 .progress-num small{display:block;font-size:11px;color:var(--muted);font-weight:500}
 
-/* Sidebar */
-.sidebar{background:#fff;border-left:1px solid #E5E7EB;display:flex;flex-direction:column;max-height:100vh}
-@media(max-width:1024px){.sidebar{border-left:none;border-top:1px solid #E5E7EB;max-height:none}}
-.sidebar-head{padding:18px 20px;border-bottom:1px solid #E5E7EB}
+/* SIDEBAR */
+.sidebar{background:#fff;border-left:1px solid var(--line);display:flex;flex-direction:column;max-height:calc(100vh - 64px)}
+@media(max-width:1024px){.sidebar{border-left:none;border-top:1px solid var(--line);max-height:none}}
+.sidebar-head{padding:18px 20px;border-bottom:1px solid var(--line)}
 .sidebar-head h2{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
 .sidebar-head h2 svg{color:var(--amber)}
+.stage-tabs{display:flex;gap:6px;margin-top:12px;overflow-x:auto;padding-bottom:4px}
+.stage-tabs::-webkit-scrollbar{height:3px}
+.stage-tabs::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:99px}
+.stab{padding:5px 12px;border-radius:8px;font-size:11.5px;font-weight:600;white-space:nowrap;background:#F1F5F9;color:#475569;transition:.2s}
+.stab.active{background:var(--amber);color:#fff}
 .sidebar-body{flex:1;overflow-y:auto;padding:8px}
 .sidebar-body::-webkit-scrollbar{width:5px}
-.sidebar-body::-webkit-scrollbar-thumb{background:#D1D5DB;border-radius:99px}
+.sidebar-body::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:99px}
 
-/* Module */
-.module{margin-bottom:2px}
-.module-title{padding:10px 16px 6px;font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:#F9FAFB;margin:6px;border-radius:8px;display:flex;justify-content:space-between}
-.module-title span{color:var(--amber)}
+/* STAGE SECTION */
+.stage-section{margin-bottom:4px}
+.stage-label{padding:12px 16px 6px;font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:#F9FAFB;margin:6px;border-radius:8px;display:flex;justify-content:space-between}
+.stage-label span{color:var(--amber)}
 
-/* Lesson */
-.lesson{display:flex;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;transition:.15s;margin:2px 6px;align-items:flex-start}
-.lesson:hover{background:#F3F4F6}
-.lesson.active{background:#FEF3C7}
-.lesson.active .lesson-name{color:#92400E}
-.lesson-thumb{width:80px;height:48px;border-radius:6px;background:#111827;flex-shrink:0;overflow:hidden;position:relative}
-.lesson-thumb img{width:100%;height:100%;object-fit:cover;opacity:.8}
-.lesson-thumb .done-tick{position:absolute;inset:0;background:rgba(16,185,129,.85);display:grid;place-items:center}
-.lesson-thumb .done-tick svg{width:20px;height:20px;stroke:#fff;stroke-width:3}
-.lesson-thumb .bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(0,0,0,.4)}
-.lesson-thumb .bar div{height:100%;background:var(--amber)}
-.lesson-meta{flex:1;min-width:0}
-.lesson-name{font-size:12.5px;font-weight:600;line-height:1.35;margin-bottom:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.lesson-sub{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.lesson-sub .pct{color:var(--amber);font-weight:700}
-.lesson-sub .done{color:var(--emerald);font-weight:700}
+/* COURSE ITEM */
+.course-item{display:flex;gap:12px;padding:12px 14px;border-radius:11px;cursor:pointer;transition:.15s;margin:2px 6px;align-items:flex-start}
+.course-item:hover{background:#F8FAFC}
+.course-item.active{background:#FEF3C7}
+.course-item .thumb{width:90px;height:54px;border-radius:8px;background:#0F172A;flex-shrink:0;overflow:hidden;position:relative;display:grid;place-items:center}
+.course-item .thumb .placeholder{color:#6B7280;font-size:22px}
+.course-item .thumb .done-tick{position:absolute;inset:0;background:rgba(16,185,129,.85);display:grid;place-items:center}
+.course-item .thumb .done-tick svg{width:22px;height:22px;stroke:#fff;stroke-width:3}
+.course-item .info{flex:1;min-width:0}
+.course-item .info .name{font-size:13px;font-weight:600;line-height:1.35;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.course-item .info .meta{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.course-item .info .meta .pct{color:var(--amber);font-weight:700}
+.course-item .info .meta .done{color:var(--emerald);font-weight:700}
+.course-item .info .meta .yt-link{color:var(--rose);font-weight:600;display:flex;align-items:center;gap:3px}
+.course-item .info .meta .yt-link svg{width:11px;height:11px}
 
-/* Stats */
-.stats{padding:14px 18px;border-top:1px solid #E5E7EB;background:#F9FAFB}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
-.stat{background:#fff;border:1px solid #E5E7EB;border-radius:9px;padding:9px;text-align:center}
-.stat b{font-size:16px;font-weight:800;display:block;letter-spacing:-.02em}
+/* STATS */
+.sidebar-foot{padding:16px 20px;border-top:1px solid var(--line);background:#F8FAFC}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px;text-align:center}
+.stat b{font-size:17px;font-weight:800;display:block;letter-spacing:-.02em}
 .stat small{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase}
-.reset{width:100%;padding:7px;border-radius:8px;font-size:11.5px;font-weight:600;color:var(--rose);background:#FEF2F2;border:1px solid #FECACA}
-.reset:hover{background:#FEE2E2}
+.reset-btn{width:100%;padding:8px;border-radius:9px;font-size:12px;font-weight:600;color:var(--rose);background:#FEF2F2;border:1px solid #FECACA;transition:.2s}
+.reset-btn:hover{background:#FEE2E2}
 
-/* Toast */
-.toast{position:fixed;bottom:20px;right:20px;background:#111827;color:#fff;padding:11px 16px;border-radius:10px;box-shadow:0 20px 40px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;z-index:999;transform:translateY(140%);transition:.35s cubic-bezier(.2,.8,.2,1);max-width:300px}
+/* RESUME */
+.resume{position:fixed;bottom:22px;left:22px;right:22px;max-width:520px;margin:0 auto;background:#0F172A;color:#fff;border-radius:14px;padding:15px 20px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-lg);z-index:200;transform:translateY(140%);transition:.4s cubic-bezier(.2,.8,.2,1)}
+.resume.show{transform:translateY(0)}
+.resume .ic{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--amber),#EA580C);display:grid;place-items:center;flex-shrink:0}
+.resume .ic svg{stroke:#fff;width:20px;height:20px}
+.resume .txt{flex:1;min-width:0}
+.resume .txt b{display:block;font-size:13.5px;font-weight:700}
+.resume .txt small{font-size:12px;color:#94A3B8}
+.resume button{padding:8px 15px;border-radius:8px;font-size:12.5px;font-weight:700}
+.resume .go{background:var(--amber);color:#fff}
+.resume .no{background:rgba(255,255,255,.1);color:#fff}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:#0F172A;color:#fff;padding:12px 18px;border-radius:11px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;z-index:300;transform:translateY(140%);transition:.4s;max-width:320px}
 .toast.show{transform:translateY(0)}
 .toast svg{color:var(--emerald);width:16px;height:16px;flex-shrink:0}
-
-/* Resume */
-.resume{position:fixed;bottom:20px;left:20px;right:20px;max-width:480px;margin:0 auto;background:#111827;color:#fff;border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 20px 50px rgba(0,0,0,.3);z-index:200;transform:translateY(140%);transition:.4s}
-.resume.show{transform:translateY(0)}
-.resume-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--amber),#EA580C);display:grid;place-items:center;flex-shrink:0}
-.resume-icon svg{stroke:#fff;width:18px;height:18px}
-.resume-text{flex:1;min-width:0}
-.resume-text b{display:block;font-size:13px;font-weight:700}
-.resume-text small{font-size:11.5px;color:#9CA3AF}
-.resume-btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;background:var(--amber);color:#fff}
-.resume-dismiss{background:rgba(255,255,255,.1);color:#fff}
 </style>
 </head>
 <body>
 
+<nav class="nav">
+  <div class="container">
+    <a href="#" class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+      Baan English Landa
+    </a>
+    <div class="user-chip"><span class="av">ส</span><span>คุณสมชาย</span></div>
+  </div>
+</nav>
+
 <div class="app">
-  <!-- LEFT: PLAYER -->
-  <div class="player-area">
-    <div class="player-box" id="playerBox">
-      <div id="ytPlayer"></div>
-      <div class="player-loading" id="playerLoading">กำลังโหลดวิดีโอ...</div>
-      <a href="#" class="fallback-btn" id="fallbackBtn" target="_blank" rel="noopener">เปิดใน YouTube</a>
+  <!-- LEFT: PLAYER AREA -->
+  <div class="stage">
+    <div class="player-wrap" id="playerWrap">
+      <div class="player-placeholder" id="playerPlaceholder">
+        <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        <p style="font-size:14px;text-align:center;padding:0 20px" id="placeholderText">เลือกคอร์สจากด้านขวาเพื่อเริ่มเรียน</p>
+        <a href="#" class="open-yt-btn hidden" id="openYtBtn" target="_blank" rel="noopener">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          เปิดใน YouTube
+        </a>
+      </div>
     </div>
 
     <div class="info-card">
-      <div class="crumb" id="crumb">คอร์ส • บทเรียน</div>
-      <h1 id="lessonTitle">กำลังโหลด...</h1>
-      <div class="src" id="lessonSrc"></div>
-      <p class="desc" id="lessonDesc"></p>
+      <div class="crumb" id="crumb">เลือกคอร์ส</div>
+      <h1 id="courseTitle">Baan English — Real YouTube Course</h1>
+      <div class="src" id="courseSrc"></div>
+      <p class="desc" id="courseDesc">เลือกคอร์สจากแถบด้านขวา ระบบจะเปิด YouTube ไปยังหน้าคอร์สจริง</p>
     </div>
 
     <div class="progress-card">
       <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-      <div class="progress-num" id="progressNum">0 / 0</div>
+      <div class="progress-num" id="progressNum">0 / 7<small>คอร์สที่เรียนจบ</small></div>
     </div>
   </div>
 
   <!-- RIGHT: SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-head">
-      <h2><svg class="icon" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg> หลักสูตรจริงจาก YouTube</h2>
+      <h2><svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg> หลักสูตรจริงจาก YouTube</h2>
+      <div class="stage-tabs" id="stageTabs"></div>
     </div>
     <div class="sidebar-body" id="playlist"></div>
-    <div class="stats">
+    <div class="sidebar-foot">
       <div class="stats-grid">
         <div class="stat"><b id="statDone">0</b><small>จบ</small></div>
-        <div class="stat"><b id="statWatch">0m</b><small>ดูแล้ว</small></div>
         <div class="stat"><b id="statPct">0%</b><small>คืบหน้า</small></div>
+        <div class="stat"><b id="statTotal">7</b><small>คอร์ส</small></div>
       </div>
-      <button class="reset" onclick="resetAll()">ล้างข้อมูลทั้งหมด</button>
+      <button class="reset-btn" onclick="resetAll()">ล้างข้อมูลทั้งหมด</button>
     </div>
   </aside>
 </div>
 
 <div class="resume" id="resumeBanner">
-  <div class="resume-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-  <div class="resume-text"><b>ดูต่อจากเดิมไหม?</b><small id="resumeText"></small></div>
-  <button class="resume-btn" onclick="resumePlay()">ดูต่อ</button>
-  <button class="resume-btn resume-dismiss" onclick="dismissResume()">ปิด</button>
+  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+  <div class="txt"><b>กลับไปเรียนต่อไหม?</b><small id="resumeText"></small></div>
+  <button class="go" onclick="resumePlay()">เรียนต่อ</button>
+  <button class="no" onclick="dismissResume()">ปิด</button>
 </div>
 
 <div class="toast" id="toast">
@@ -158,62 +194,110 @@ img{max-width:100%;display:block}
 
 <script>
 /* ============================================================
-   REAL COURSE DATA — 基于搜索结果中的真实视频 ID 和播放列表
+   COURSE DATA — 真实频道 & 播放列表，链接来自搜索结果
    ============================================================ */
 const COURSE = {
-  title: 'English from Real YouTube',
-  modules: [
+  title: 'Baan English — Real YouTube Course',
+  stages: [
     {
-      id: 'm1', name: 'Grammar Essentials (Lucy)', source: 'English with Lucy',
+      id: 's1', name: '基础入门 (A1-A2)', level: 'A1-A2',
       items: [
-        { id:'v1', name:'ALL 12 ENGLISH TENSES IN 1 HOUR', ytId:'Qi7imPEvI3U', dur:'1:10:42', desc:'Lucy 用一小时讲完 12 个时态，含两个测试。190 万观看。', src:'English with Lucy' },
-        { id:'v2', name:'5-Day Shadowing Challenge — Day 5 Review', ytId:'DZWsQyRDKJw', dur:'14m', desc:'5 天 Shadowing 挑战的第 5 天复习 + 最终测试。覆盖 B1-C1 级别。', src:'English with Lucy' }
+        {
+          id: 'c1',
+          name: 'English with Beth — 美式英语初学者课程',
+          channel: 'English with Beth',
+          desc: '用“可理解输入”方式教学，从 “Hi, I\'m Beth” 开始，每课 20-27 分钟，逐步进阶。播放列表包含 26+ 课。',
+          ytUrl: 'https://www.youtube.com/playlist?list=PLoQjhQuO0mXktEK_Cbemz2x19chABBTaO',
+          playlistId: 'PLoQjhQuO0mXktEK_Cbemz2x19chABBTaO',
+          lessons: 26,
+          note: '搜索结果确认：39,391 次观看，26+ 课可用[citation:9]'
+        },
+        {
+          id: 'c2',
+          name: 'BBC English in a Minute',
+          channel: 'BBC Learning English',
+          desc: '一分钟英语系列，覆盖语法、词汇、短语。有多个 Series（Series 1-5），每集约 1 分钟。',
+          ytUrl: 'https://www.bbc.co.uk/learningenglish/english/features/s5english_in_a_minute',
+          playlistId: '',
+          lessons: 50,
+          note: 'BBC 官网确认 Series 5 可用，Series 1-4 也有链接[citation:2]'
+        }
       ]
     },
     {
-      id: 'm2', name: 'BBC Learning English', source: 'BBC Learning English',
+      id: 's2', name: '语法与发音 (B1)', level: 'B1',
       items: [
-        { id:'v3', name:'English In A Minute: like or as', ytId:'uKQknI9EdrM', dur:'1m', desc:'BBC 一分钟英语系列：like 和 as 的区别。系列中还有大量语法对比视频。', src:'BBC Learning English' },
-        { id:'v4', name:'English In A Minute Playlist (完整系列)', ytId:'uKQknI9EdrM', dur:'系列', desc:'播放列表包含 some/any、still/already/yet、too/enough、look/look like 等 60+ 个一分钟语法视频。', src:'BBC Learning English' }
+        {
+          id: 'c3',
+          name: 'English with Lucy — Grammar 播放列表',
+          channel: 'English with Lucy',
+          desc: 'Tenses、Adjectives、Prepositions、Question Tags 等。含 “Learn ALL 16 TENSES in under 30 Minutes” 等热门视频。',
+          ytUrl: 'https://www.youtube.com/results?search_query=english+with+lucy+grammar+playlist',
+          playlistId: '',
+          lessons: 30,
+          note: 'Dek-D 确认 Lucy 有 Grammar 播放列表，覆盖 Tenses/Prepositions 等[citation:11]'
+        },
+        {
+          id: 'c4',
+          name: 'mmmEnglish — 发音与模仿课程',
+          channel: 'mmmEnglish',
+          desc: '连读 (Connected Speech & Linking)、重音、语调、TH 发音、GIRL & WORLD 发音等。含 Imitation Lessons。',
+          ytUrl: 'https://www.youtube.com/results?search_query=mmmenglish+pronunciation+playlist',
+          playlistId: '',
+          lessons: 35,
+          note: '学术论文确认 mmmEnglish 发音播放列表可用，含 Imitation Lessons[citation:13]'
+        }
       ]
     },
     {
-      id: 'm3', name: 'Speaking Practice (Vanessa)', source: 'Speak English With Vanessa',
+      id: 's3', name: '会话与听力 (B1-B2)', level: 'B1-B2',
       items: [
-        { id:'v5', name:'No Partner? 3 Ways to Practice Speaking Alone', ytId:'HXhjdcrZjLQ', dur:'约 10m', desc:'没有语伴怎么练口语？Vanessa 给 3 个实用方法。', src:'Speak English With Vanessa' },
-        { id:'v6', name:'5-Hour Speaking Playlist', ytId:'HXhjdcrZjLQ', dur:'5 hours', desc:'Vanessa 的 5 小时口语练习播放列表，包含大量对话和口语训练。', src:'Speak English With Vanessa' }
+        {
+          id: 'c5',
+          name: 'Vanessa — 5-Hour Speaking Playlist',
+          channel: 'Speak English With Vanessa',
+          desc: 'Vanessa 的 5 小时口语播放列表，包含大量对话和口语训练。还有 “90 Minute English Speaking Practice” 等长视频。',
+          ytUrl: 'https://youtube.com/playlist?list=PLKWcPfZiScgC_6_u5kdcH6qg_YCyQoZ2e',
+          playlistId: 'PLKWcPfZiScgC_6_u5kdcH6qg_YCyQoZ2e',
+          lessons: 15,
+          note: 'YouTube feed 确认播放列表 ID 可用[citation:4]'
+        },
+        {
+          id: 'c6',
+          name: 'American English File Level 3 — 完整课程',
+          channel: 'Soroosh / YouTube',
+          desc: '基于 American English File 2nd Edition Level 3 的完整中级课程。覆盖 past perfect、conditionals、reported speech，含真实生活听力。B1-B2。',
+          ytUrl: 'https://www.youtube.com/playlist?list=PLzvrX7HHSWsJ3moc7QKkn_p_lOANkQmy0',
+          playlistId: 'PLzvrX7HHSWsJ3moc7QKkn_p_lOANkQmy0',
+          lessons: 40,
+          note: 'YouTube 播放列表确认可用，B1-B2 完整课程[citation:7]'
+        }
       ]
     },
     {
-      id: 'm4', name: 'Grammar Deep Dive (mmmEnglish)', source: 'mmmEnglish',
+      id: 's4', name: '商务英语 (B2)', level: 'B2',
       items: [
-        { id:'v7', name:'English Conditionals — 完整课程', ytId:'Jjj5-KnpdIQ', dur:'系列', desc:'mmmEnglish 的条件句完整课程：zero、first、second、third、mixed conditionals。每个视频含测验。', src:'mmmEnglish' },
-        { id:'v8', name:'Past Perfect Tense Lesson', ytId:'Jjj5-KnpdIQ', dur:'约 10m', desc:'Past Perfect 时态详细讲解 + 发音 + 例句。', src:'mmmEnglish' }
-      ]
-    },
-    {
-      id: 'm5', name: 'Business English (925)', source: 'Business English Pod',
-      items: [
-        { id:'v9', name:'925 English Lesson 44 — Phrasal Verbs with Drop', ytId:'', dur:'约 8m', desc:'商务英语短语动词系列：drop 的短语动词。面向 A2 级别。', src:'Business English Pod' },
-        { id:'v10', name:'925 English Lesson 40 — Expressing Support', ytId:'', dur:'约 8m', desc:'用英语表达支持：适度的支持、强烈的支持，以及在会议中的用法。', src:'Business English Pod' }
-      ]
-    },
-    {
-      id: 'm6', name: 'Complete Textbook Course', source: 'American English File',
-      items: [
-        { id:'v11', name:'American English File Level 3 — Full Course', ytId:'', dur:'系列', desc:'基于 American English File 2nd Edition Level 3 的完整中级课程（B1-B2），含语法、词汇、发音、听力。', src:'YouTube Playlist' },
-        { id:'v12', name:'English File Elementary — Full Course', ytId:'', dur:'系列', desc:'Elementary 级别完整课程，覆盖语法、词汇、口语、发音。适合初学者。', src:'LingoVerse Academy' }
+        {
+          id: 'c7',
+          name: 'Business English Pod — 925 English',
+          channel: 'Business English Pod',
+          desc: '925 English 系列，面向 A2 级别，覆盖短语动词、表达支持、切换话题等实用商务表达。',
+          ytUrl: 'https://www.businessenglishpod.com/category/video/',
+          playlistId: '',
+          lessons: 44,
+          note: '官网确认 925 English Lesson 40-44 可用[citation:6]'
+        }
       ]
     }
   ]
 };
 
-const ALL_LESSONS = [];
-COURSE.modules.forEach((m, mi) => {
-  m.items.forEach(it => {
-    it.modIdx = mi;
-    it.flatIdx = ALL_LESSONS.length;
-    ALL_LESSONS.push(it);
+const ALL_COURSES = [];
+COURSE.stages.forEach((s, si) => {
+  s.items.forEach(it => {
+    it.stageIdx = si;
+    it.flatIdx = ALL_COURSES.length;
+    ALL_COURSES.push(it);
   });
 });
 
@@ -222,8 +306,8 @@ COURSE.modules.forEach((m, mi) => {
    ============================================================ */
 const KEY = 'baan_real_tracker_v1';
 function loadData(){
-  try{ return JSON.parse(localStorage.getItem(KEY)) || { lessons:{}, lastPlayed:null, totalSec:0 }; }
-  catch(e){ return { lessons:{}, lastPlayed:null, totalSec:0 }; }
+  try{ return JSON.parse(localStorage.getItem(KEY)) || { courses:{}, lastPlayed:null }; }
+  catch(e){ return { courses:{}, lastPlayed:null }; }
 }
 let data = loadData();
 function saveData(){ try{ localStorage.setItem(KEY, JSON.stringify(data)); }catch(e){} }
@@ -231,120 +315,9 @@ function saveData(){ try{ localStorage.setItem(KEY, JSON.stringify(data)); }catc
 /* ============================================================
    STATE
    ============================================================ */
-let player = null, currentIdx = 0, tick = null, pendingResume = null;
-
-/* ============================================================
-   YT API
-   ============================================================ */
-function loadYT(cb){
-  if(window.YT && window.YT.Player){ cb(); return; }
-  const s = document.createElement('script');
-  s.src = 'https://www.youtube.com/iframe_api';
-  const f = document.getElementsByTagName('script')[0];
-  f.parentNode.insertBefore(s, f);
-  window.onYouTubeIframeAPIReady = cb;
-}
-
-function createPlayer(videoId, startSec){
-  document.getElementById('playerLoading').style.display = 'grid';
-  document.getElementById('fallbackBtn').style.display = 'none';
-  document.getElementById('fallbackBtn').href = 'https://www.youtube.com/watch?v=' + videoId;
-
-  if(player && player.destroy){ try{ player.destroy(); }catch(e){} player = null; }
-  const el = document.createElement('div');
-  el.id = 'ytPlayer';
-  document.getElementById('ytPlayer').replaceWith(el);
-
-  player = new YT.Player('ytPlayer', {
-    videoId: videoId,
-    playerVars:{ rel:0, modestbranding:1, playsinline:1, start:Math.floor(startSec||0), origin:location.origin },
-    events:{
-      onReady(e){
-        document.getElementById('playerLoading').style.display = 'none';
-        e.target.playVideo();
-        startTick();
-      },
-      onStateChange: onState,
-      onError(e){
-        document.getElementById('playerLoading').style.display = 'none';
-        document.getElementById('fallbackBtn').style.display = 'flex';
-        toast('此视频不允许嵌入，点击“打开 YouTube”观看');
-      }
-    }
-  });
-}
-
-function onState(e){
-  if(e.data === 0){
-    const l = ALL_LESSONS[currentIdx];
-    markDone(l.id, true);
-    toast('✓ 完成本课！');
-    stopTick();
-    setTimeout(() => {
-      if(currentIdx < ALL_LESSONS.length - 1) loadLesson(currentIdx + 1);
-      else toast('🎉 已完成全部课程！');
-    }, 1000);
-  }
-  if(e.data === 1) startTick();
-  if(e.data === 2){ stopTick(); saveTime(); }
-}
-
-/* ============================================================
-   TRACKING
-   ============================================================ */
-function startTick(){ stopTick(); tick = setInterval(saveTime, 5000); }
-function stopTick(){ if(tick){ clearInterval(tick); tick = null; } }
-
-function saveTime(){
-  if(!player || !player.getCurrentTime) return;
-  try{
-    const t = player.getCurrentTime(), d = player.getDuration();
-    if(!d || d <= 0) return;
-    const l = ALL_LESSONS[currentIdx];
-    if(!data.lessons[l.id]) data.lessons[l.id] = {};
-    const L = data.lessons[l.id];
-    const prev = L.watched || 0;
-    if(t > prev) data.totalSec = (data.totalSec || 0) + (t - prev);
-    L.watched = t; L.duration = d;
-    L.pct = Math.min(100, Math.round((t/d)*100));
-    if(L.pct >= 80 && !L.done){ L.done = true; toast('✓ 本课已计入完成'); }
-    data.lastPlayed = { id: l.id, t };
-    saveData();
-    renderSidebar();
-    renderProgress();
-    renderStats();
-  }catch(e){}
-}
-
-/* ============================================================
-   LOAD LESSON
-   ============================================================ */
-function loadLesson(idx){
-  if(idx < 0 || idx >= ALL_LESSONS.length) return;
-  currentIdx = idx;
-  const l = ALL_LESSONS[idx];
-  const mod = COURSE.modules[l.modIdx];
-
-  document.getElementById('crumb').textContent = `${mod.name} • ${mod.source}`;
-  document.getElementById('lessonTitle').textContent = l.name;
-  document.getElementById('lessonSrc').innerHTML = `<svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg> ${l.src} • ${l.dur}`;
-  document.getElementById('lessonDesc').textContent = l.desc;
-
-  const L = data.lessons[l.id] || {};
-  const start = (L.watched && L.pct < 95) ? L.watched : 0;
-
-  if(l.ytId){
-    loadYT(() => createPlayer(l.ytId, start));
-  } else {
-    document.getElementById('playerLoading').textContent = '此课程为播放列表，点击打开 YouTube 播放';
-    document.getElementById('fallbackBtn').style.display = 'flex';
-    document.getElementById('fallbackBtn').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(l.name);
-  }
-
-  renderSidebar();
-  renderProgress();
-  renderStats();
-}
+let currentIdx = 0;
+let activeStageFilter = 'all';
+let pendingResume = null;
 
 /* ============================================================
    RENDER SIDEBAR
@@ -352,30 +325,27 @@ function loadLesson(idx){
 function renderSidebar(){
   const box = document.getElementById('playlist');
   let html = '';
-  COURSE.modules.forEach((mod, mi) => {
-    const modLessons = ALL_LESSONS.filter(l => l.modIdx === mi);
-    const done = modLessons.filter(l => (data.lessons[l.id]||{}).done).length;
-    html += `<div class="module"><div class="module-title">${mod.name}<span>${done}/${modLessons.length}</span></div>`;
-    modLessons.forEach(l => {
-      const L = data.lessons[l.id] || {};
-      const pct = L.pct || 0;
-      const isDone = L.done;
-      const isActive = ALL_LESSONS[currentIdx] && ALL_LESSONS[currentIdx].id === l.id;
-      const thumb = l.ytId ? `https://img.youtube.com/vi/${l.ytId}/mqdefault.jpg` : '';
+  COURSE.stages.forEach((stage, si) => {
+    if(activeStageFilter !== 'all' && activeStageFilter !== stage.id) return;
+    const stageCourses = ALL_COURSES.filter(c => c.stageIdx === si);
+    const done = stageCourses.filter(c => (data.courses[c.id]||{}).done).length;
+    html += `<div class="stage-section">
+      <div class="stage-label">${stage.name}<span>${done}/${stageCourses.length}</span></div>`;
+    stageCourses.forEach(c => {
+      const C = data.courses[c.id] || {};
+      const isDone = C.done;
+      const isActive = ALL_COURSES[currentIdx] && ALL_COURSES[currentIdx].id === c.id;
       html += `
-        <div class="lesson ${isActive?'active':''}" onclick="loadLesson(${l.flatIdx})">
-          <div class="lesson-thumb">
-            ${thumb ? `<img src="${thumb}" loading="lazy" onerror="this.style.display='none'">` : `<div style="display:grid;place-items:center;height:100%;color:#6B7280;font-size:20px">📋</div>`}
+        <div class="course-item ${isActive?'active':''}" onclick="selectCourse(${c.flatIdx})">
+          <div class="thumb">
+            <div class="placeholder">🎬</div>
             ${isDone ? `<div class="done-tick"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>`:''}
-            ${pct>0 && !isDone ? `<div class="bar"><div style="width:${pct}%"></div></div>`:''}
           </div>
-          <div class="lesson-meta">
-            <div class="lesson-name">${l.name}</div>
-            <div class="lesson-sub">
-              ${isDone ? `<span class="done">✓ 已完成</span>`
-                : pct>0 ? `<span class="pct">${pct}% • 继续观看</span>`
-                : `<span>▶ 未开始</span>`}
-              <span>${l.dur}</span>
+          <div class="info">
+            <div class="name">${c.name}</div>
+            <div class="meta">
+              <span>${c.channel}</span>
+              ${isDone ? `<span class="done">✓ 已完成</span>` : `<span>${c.lessons} lessons</span>`}
             </div>
           </div>
         </div>`;
@@ -385,43 +355,84 @@ function renderSidebar(){
   box.innerHTML = html;
 }
 
-/* ============================================================
-   RENDER PROGRESS & STATS
-   ============================================================ */
-function renderProgress(){
-  const done = ALL_LESSONS.filter(l => (data.lessons[l.id]||{}).done).length;
-  const total = ALL_LESSONS.length;
-  const pct = total ? Math.round((done/total)*100) : 0;
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressNum').innerHTML = `${done} / ${total}<small>课时完成</small>`;
+function renderStageTabs(){
+  const tabs = document.getElementById('stageTabs');
+  const allDone = ALL_COURSES.filter(c => (data.courses[c.id]||{}).done).length;
+  let html = `<button class="stab ${activeStageFilter==='all'?'active':''}" onclick="setStage('all')">ทั้งหมด (${allDone}/${ALL_COURSES.length})</button>`;
+  COURSE.stages.forEach(s => {
+    const sc = ALL_COURSES.filter(c => c.stageIdx === COURSE.stages.indexOf(s));
+    const d = sc.filter(c => (data.courses[c.id]||{}).done).length;
+    html += `<button class="stab ${activeStageFilter===s.id?'active':''}" onclick="setStage('${s.id}')">${s.name.split(' ')[0]} (${d}/${sc.length})</button>`;
+  });
+  tabs.innerHTML = html;
 }
 
-function renderStats(){
-  const done = ALL_LESSONS.filter(l => (data.lessons[l.id]||{}).done).length;
-  const total = ALL_LESSONS.length;
-  const pct = total ? Math.round((done/total)*100) : 0;
-  document.getElementById('statDone').textContent = done;
-  document.getElementById('statWatch').textContent = Math.round((data.totalSec||0)/60) + 'm';
-  document.getElementById('statPct').textContent = pct + '%';
+function setStage(id){
+  activeStageFilter = id;
+  renderSidebar();
+  renderStageTabs();
 }
 
 /* ============================================================
-   UTILS
+   SELECT COURSE
    ============================================================ */
-function markDone(id, silent){
-  if(!data.lessons[id]) data.lessons[id] = {};
-  data.lessons[id].done = true;
-  data.lessons[id].pct = 100;
+function selectCourse(idx){
+  if(idx < 0 || idx >= ALL_COURSES.length) return;
+  currentIdx = idx;
+  const c = ALL_COURSES[idx];
+  const stage = COURSE.stages[c.stageIdx];
+
+  document.getElementById('crumb').textContent = `${stage.name} • ${c.channel}`;
+  document.getElementById('courseTitle').textContent = c.name;
+  document.getElementById('courseSrc').innerHTML = `<svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg> ${c.channel} • ${c.lessons} lessons`;
+  document.getElementById('courseDesc').textContent = c.desc;
+
+  // Show YouTube link
+  const placeholder = document.getElementById('playerPlaceholder');
+  const ytBtn = document.getElementById('openYtBtn');
+  document.getElementById('placeholderText').textContent = c.note;
+  ytBtn.href = c.ytUrl;
+  ytBtn.classList.remove('hidden');
+
+  data.lastPlayed = { id: c.id, ts: Date.now() };
+  saveData();
+  renderSidebar();
+  renderStats();
+}
+
+/* ============================================================
+   MARK DONE
+   ============================================================ */
+function markDone(id){
+  if(!data.courses[id]) data.courses[id] = {};
+  data.courses[id].done = true;
+  data.courses[id].doneAt = Date.now();
   saveData();
   renderSidebar();
   renderProgress();
   renderStats();
-  if(!silent) toast('✓ 标记为已完成');
+  renderStageTabs();
+  toast('✓ ทำเครื่องหมายว่าเรียนจบแล้ว');
 }
 
-function fmt(s){
-  if(!s || s<0) return '0:00';
-  return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
+/* ============================================================
+   PROGRESS & STATS
+   ============================================================ */
+function renderProgress(){
+  const done = ALL_COURSES.filter(c => (data.courses[c.id]||{}).done).length;
+  const total = ALL_COURSES.length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressNum').innerHTML = `${done} / ${total}<small>คอร์สที่เรียนจบ</small>`;
+}
+
+function renderStats(){
+  const done = ALL_COURSES.filter(c => (data.courses[c.id]||{}).done).length;
+  const total = ALL_COURSES.length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('statDone').textContent = done;
+  document.getElementById('statPct').textContent = pct + '%';
+  document.getElementById('statTotal').textContent = total;
 }
 
 /* ============================================================
@@ -429,18 +440,18 @@ function fmt(s){
    ============================================================ */
 function checkResume(){
   const lp = data.lastPlayed;
-  if(!lp || !lp.t || lp.t < 10) return;
-  const l = ALL_LESSONS.find(x => x.id === lp.id);
-  if(!l) return;
-  if((data.lessons[lp.id]||{}).done) return;
-  pendingResume = { id: lp.id, t: lp.t };
-  document.getElementById('resumeText').textContent = `${l.name} • 看到 ${fmt(lp.t)}`;
+  if(!lp) return;
+  const c = ALL_COURSES.find(x => x.id === lp.id);
+  if(!c) return;
+  if((data.courses[c.id]||{}).done) return;
+  pendingResume = { id: lp.id };
+  document.getElementById('resumeText').textContent = c.name;
   document.getElementById('resumeBanner').classList.add('show');
 }
 function resumePlay(){
   if(!pendingResume) return;
-  const i = ALL_LESSONS.findIndex(l => l.id === pendingResume.id);
-  if(i >= 0) loadLesson(i);
+  const i = ALL_COURSES.findIndex(c => c.id === pendingResume.id);
+  if(i >= 0) selectCourse(i);
   dismissResume();
 }
 function dismissResume(){
@@ -455,7 +466,11 @@ function resetAll(){
   if(!confirm('清除全部学习进度？')) return;
   localStorage.removeItem(KEY);
   data = loadData();
-  loadLesson(0);
+  selectCourse(0);
+  renderSidebar();
+  renderProgress();
+  renderStats();
+  renderStageTabs();
   toast('已清除');
 }
 
@@ -475,15 +490,12 @@ function toast(msg){
    INIT
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  const lp = data.lastPlayed;
-  let start = 0;
-  if(lp){
-    const i = ALL_LESSONS.findIndex(l => l.id === lp.id);
-    if(i >= 0 && !(data.lessons[lp.id]||{}).done) start = i;
-  }
-  loadLesson(start);
+  selectCourse(0);
+  renderSidebar();
+  renderProgress();
+  renderStats();
+  renderStageTabs();
   setTimeout(checkResume, 1500);
-  window.addEventListener('beforeunload', () => { saveTime(); saveData(); });
 });
 </script>
 </body>
